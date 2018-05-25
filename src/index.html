@@ -4,11 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>중간 프로젝트 템플릿</title>
+  <link href="https://unpkg.com/ionicons@4.1.2/dist/css/ionicons.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./index.scss">
+  <title>All about eCommerce</title>  
 </head>
 <body>
-  <h1>중간 프로젝트 템플릿</h1>
+  <div class="root">
+      <h1 class="root__title"> TODO LIST APP</h1>
+      <!-- <p class="login--required">Login First</p>    
+      <p class="login--changed">Would you use your logined account? Or switch to another?</p>    
+      <a href="#" class="btn btn__log--in">LOG IN</a>
+      <a href="#" class="btn btn__log--to-this">USE MINE</a>
+      <a href="#" class="btn btn__log--to-other">CHANGE ACCOUNT</a> -->
+    </div>
+
+    <!-- 로그인 페이지 -->
+    <template id="login">
+      <div class="login">
+        <h1 class="login__title">Log in</h1>
+        <form class="login__form">
+          <input name="username" type="text" class="login__username">
+          <input name="password" type="password" class="login__password">
+          <button type="submit">Log in</button>
+        </form>
+      </div>
+    </template>
+
+
+
   <script src="./index.js"></script>
 </body>
 </html>

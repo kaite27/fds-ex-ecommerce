@@ -4,15 +4,20 @@
   "description": "패스트캠퍼스 프론트엔드 개발 스쿨 중간 프로젝트 템플릿",
   "scripts": {
     "start": "parcel src/index.html --open",
-    "build": "rimraf dist && parcel build src/index.html"
+    "build": "rimraf dist && parcel build src/index.html",
+    "server": "fds-json-server --watch db.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "babel-preset-react-app": "^3.1.1",
+    "node-sass": "^4.9.0",
     "parcel-bundler": "^1.8.1",
-    "rimraf": "^2.6.2",
-    "node-sass": "^4.9.0"
+    "rimraf": "^2.6.2"
+  },
+  "devDependencies": {
+    "fds-json-server": "0.0.4"
   }
 }
