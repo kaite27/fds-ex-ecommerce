@@ -1,34 +1,64 @@
 $main-color: skyblue;
 $color-blue: dodgerblue;
 
-body {
-  background-color: $main-color;
+/* ---------- General Modules ----------- */
+
+.clearfix {
+  zoom: 1
 }
 
-.btn {
-  width: auto;
-  border: 1px solid #666;
-  border-radius: 4px;
-  background-color: #555;
-  padding: 5px 10px;
-  color: #fff;
-  text-decoration: none;
-
-  &__log {
-    &--in {
-      .root--authed & {
-        display: none;
-      }
-    }
-    &--out {
-      display: none;
-      .root--authed & {
-        display: inline-block;
-      }
-    }
-  }
+.clearfix:after {
+  content: '.';
+  clear: both;
+  display: block;
+  height: 0;
+  visibility: hidden;
 }
 
+.offScreen {
+  background-color: #777373;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  margin: -1px;
+  position: absolute;
+  clip: rect(0,0,0,0);
+  font-size: 0;
+  line-height: 0;
+}
+
+/* basic setting */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  color: #666;
+  text-align: center;
+  margin: 2% 0;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
+}
+
+/* layout control */
+.w-100 {
+  height: 400px;
+}
+
+section {
+  padding: 20px;
+}
+
+.rows {
+  width: 1200px;
+  margin: 0 auto;
+  padding: 10px 0;
+}
 
 // loading indicator
 .root {
@@ -47,6 +77,36 @@ body {
   }
 }
 
+// button setting
+.btn {
+
+  /* dropdown button control */
+  &-group {
+    display: flex;
+    justify-content: flex-end;
+    width: calc(100% - 220px);
+  }
+  &__log {
+    &--in {
+      .root--authed & {
+        display: none;
+      }
+    }
+    &--out {
+      display: none;
+      .root--authed & {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+// nav setting 
+.nav { &-item:last-child { width: 100px; } }
+
+.dropdown-menu { left: auto; }
+
+// required??
 .login {
   &--required {
     .root--authed & {
@@ -60,3 +120,137 @@ body {
     }
   }
 }
+
+.cart-icon {
+  &__i {
+    font-size: 1.8rem;
+    margin-left: 15px;
+  }
+}
+
+
+/* header carouser setting */
+.main-header {
+  display: grid;
+  grid-template-areas: "cr one two" "cr three four";
+  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-rows: 200px 200px;
+  width: 100%;
+}
+
+.events {
+  overflow: hidden;
+  position: relative;
+  
+  &-one { grid-area: one; }
+  &-two { grid-area: two; }
+  &-three { grid-area: three;}
+  &-four { grid-area: four; }
+
+  &-btn {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+} 
+
+.carousel { grid-area: cr; }
+
+
+/* new-products */
+.new-products {
+  position: relative;
+  &-list {
+    display: flex;
+    flex-direction: row;  
+    justify-content: space-around;
+  }
+  &-items {
+    width: 22%;
+    text-align: center;
+    box-shadow: 0 0 0 !important;
+    border: 0;
+    .p {
+      font-size: 1.2rem;
+    }
+    img {
+      height: 250px;
+    }
+    &__title {
+      font-size: 1.3rem;
+    }
+    &__card {
+      margin: 7px 0 0;
+    }
+  }
+}
+
+.list-group-item {
+  border: 0;
+  &__unitPrice {
+    text-decoration: line-through;    
+    margin-right: 10px;
+    color: #999;
+  }
+  &__marketPrice {
+    font-size: 1.2rem;
+  }
+}
+
+/* Subscribes */
+.subscribes {
+  background-color: cornflowerblue;
+  background-image: url("images/slide-1.jpg");
+  background-repeat: no-repeat;
+  text-align: center;
+  button {
+    font-size: 1.2rem;
+  }
+  input {
+    width: 30%;
+    vertical-align: bottom;
+    margin-right: 10px;
+  }
+  &-form { padding: 20px 0 50px 0 ; }
+}
+
+// search bar
+.search {
+  &-control { margin-bottom: 15px; }
+  &-bar { width: 300px; }
+}
+
+
+// product page 페이지 
+.product-page {
+  &__li {
+    // margin-top: 15px;
+  }
+  &__box {
+    text-align: center;
+    border: 0;
+  }
+  &__title {
+    font-size: 1.3rem;
+  }
+  &__card {
+    margin: 7px 0 0;
+  }
+}
+
+.img-box {
+  position: relative;
+  margin: 0 auto;
+  width: 90%;
+  margin-top: 13px;
+  &__btn, &__dropdown {
+    position: absolute;
+    top: 80%;
+    left: 60%;
+  }
+  &__dropdown {
+    left: 35%;
+  }
+}
+
