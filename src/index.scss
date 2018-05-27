@@ -111,8 +111,10 @@ section {
     left: 0;
     bottom: 0;
     width: 100%; 
-  } 
-  &-item:last-child { width: 100px; } }
+  }
+  &-item:nth-child(2n) { width: 105px; } 
+}
+
 
 .dropdown-menu { left: auto; }
 

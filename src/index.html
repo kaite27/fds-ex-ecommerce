@@ -23,15 +23,12 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home
+            <a class="nav-link nav-link__btn-home" href="#">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item"><a class="nav-link nav-link__btn-dress" href="#">Dress</a></li>
-          <li class="nav-item"><a class="nav-link nav-link__btn-coat" href="#">Coat</a></li>
-          <li class="nav-item"><a class="nav-link nav-link__btn-shoes" href="#">Shoes</a></li>
-          <li class="nav-item"><a class="nav-link nav-link__btn-bags" href="#">Bags</a></li>
-          <li class="nav-item"><a class="nav-link nav-link__btn-shirts" href="#">Shirts</a></li>
+          <li class="nav-item"><a class="nav-link nav-link__btn-new" href="#new-product">New Arrivals</a></li>
+          <li class="nav-item"><a class="nav-link nav-link__btn-product" href="#">Products</a></li>
           <li class="nav-item"><a class="nav-link nav-link__btn-contact" href="#">Contact us</a></li>
         </ul>
         <div class="btn-group">
@@ -39,10 +36,11 @@
             aria-expanded="false">Accounts
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Log in</a>
+            <a class="dropdown-item" href="#">Sign in</a>
             <a class="dropdown-item" href="#">My Orders</a>
             <a class="dropdown-item" href="#">Shopping Cart</a>
             <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Log in</a>
             <a class="dropdown-item" href="#">Log Out</a>
           </div>
         </div>
@@ -118,7 +116,7 @@
 
   <!-- product page -->
   <template id="new-products">
-    <section class="new-products">
+    <section class="new-products" id="new-product">
       <div class="rows">
         <h2>New Arrivals</h2>
       </div>
@@ -226,8 +224,8 @@
           <a href="#" class="img-box__btn card-link btn btn-success">Add Cart</a>
         </div>
         <div class="product-page__card">
-          <p class="product-page__title">Fashion </p>
-          <p class="product-page__desc">Fashion </p>
+          <p class="product-page__title"></p>
+          <p class="product-page__desc"></p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -236,8 +234,8 @@
           </li>
           <li class="list-group-item">
             Options : 
-            <p class="list-group-item__variants">Colors : <span class="list-group-item__color">3</span></p>
-            <p class="list-group-item__variants">Size : <span class="list-group-item__size">2</span></p>
+            <p class="list-group-item__variants">Colors : <span class="list-group-item__color"></span></p>
+            <p class="list-group-item__variants">Size : <span class="list-group-item__size"></span></p>
           </li>
         </ul>
       </div>

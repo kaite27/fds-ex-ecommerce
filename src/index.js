@@ -42,6 +42,15 @@ function logout() {
 
 async function nav() {
   const nav = document.importNode(templates.navigation, true)
+  nav.querySelector('.nav-link__btn-home').addEventListener("click", e => {
+    rootEl.textContent = '' 
+    indexPage();
+  })
+
+  nav.querySelector('.nav-link__btn-product').addEventListener("click", e => { 
+    rootEl.textContent = '' 
+    productPage()
+  })
   render(nav)
 }
 
@@ -70,14 +79,14 @@ async function indexPage() {
   render(mainHeader)
   render(newProFrag)
   render(subscribe)
-
-  document.querySelector('.nav-link__btn-dress').addEventListener("click", e => {
-    rootEl.textContent = '' 
-    productPage()
-  })
 }
 
-indexPage();
+// 중복 제거 매소드
+function avoid(arr) {
+  arr.filter(function(item, i, arr){
+    return i == arr.indexOf(item)
+  })
+}
 
 // 앱 실행 페이지
 async function productPage() {
@@ -94,11 +103,29 @@ async function productPage() {
     const itemDesc = fragment.querySelector('.product-page__desc')
     const unitPrice = fragment.querySelector('.list-group-item__unitPrice')
     const marketPrice = fragment.querySelector('.list-group-item__marketPrice')
+    const colorCnt = fragment.querySelector('.list-group-item__color')
+    const sizeCnt = fragment.querySelector('.list-group-item__size')
 
     itemTitle.textContent = product.productTitle
     itemDesc.textContent = product.productDesc
     unitPrice.textContent = product.unitPrice
     marketPrice.textContent = product.marketPrice
+    let arrColor = [];
+    let arrSize = [];
+    
+    attRes.data.forEach(attribute => {      
+      if(product.id === attribute.productId) {
+        arrColor.push(' ' + attribute.color)
+        colorCnt.textContent = arrColor.filter(function(item, i, arr){
+          return i == arr.indexOf(item)
+        })
+
+        arrSize.push(' ' + attribute.size)
+        sizeCnt.textContent = arrSize.filter(function(item, i, arr){
+          return i == arr.indexOf(item)
+        })
+      }
+    })
 
     productPage.querySelector('.product-page-list').appendChild(fragment)    
   })
@@ -130,9 +157,9 @@ if (localStorage.getItem('token')) {
   login(localStorage.getItem('token'))
 } 
 
-// if(localStorage.getItem('token')) {
-//   // localStrage 에 토큰들어가 있으면 무조건 appStartPage() 로 이동해라
-//   indexPage()
+if(localStorage.getItem('token')) {
+  // localStrage 에 토큰들어가 있으면 무조건 appStartPage() 로 이동해라
+  indexPage()
   
-// } else indexPage();
+} else indexPage();
 
