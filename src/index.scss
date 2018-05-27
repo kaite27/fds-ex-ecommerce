@@ -102,7 +102,17 @@ section {
 }
 
 // nav setting 
-.nav { &-item:last-child { width: 100px; } }
+.nav {
+  &bar { 
+    position: sticky; 
+    height: 68px;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%; 
+  } 
+  &-item:last-child { width: 100px; } }
 
 .dropdown-menu { left: auto; }
 
@@ -156,7 +166,6 @@ section {
 } 
 
 .carousel { grid-area: cr; }
-
 
 /* new-products */
 .new-products {
@@ -225,7 +234,8 @@ section {
 // product page 페이지 
 .product-page {
   &__li {
-    // margin-top: 15px;
+    display: inline-block;
+    width: 33% !important;
   }
   &__box {
     text-align: center;

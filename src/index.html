@@ -12,57 +12,53 @@
 </head>
 <body>
   <!-- root -->
-  <div class="root">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">MAll</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Dress</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Coat</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Shose</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact us</a>
-        </li>
-      </ul>
-      <div class="btn-group">
-        <button type="button" class="btn btn-success dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">Accounts
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Log in</a>
-          <a class="dropdown-item" href="#">My Orders</a>
-          <a class="dropdown-item" href="#">Shopping Cart</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Log Out</a>
+  <div class="root"></div>
+
+  <template id="navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">MAll</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item"><a class="nav-link nav-link__btn-dress" href="#">Dress</a></li>
+          <li class="nav-item"><a class="nav-link nav-link__btn-coat" href="#">Coat</a></li>
+          <li class="nav-item"><a class="nav-link nav-link__btn-shoes" href="#">Shoes</a></li>
+          <li class="nav-item"><a class="nav-link nav-link__btn-bags" href="#">Bags</a></li>
+          <li class="nav-item"><a class="nav-link nav-link__btn-shirts" href="#">Shirts</a></li>
+          <li class="nav-item"><a class="nav-link nav-link__btn-contact" href="#">Contact us</a></li>
+        </ul>
+        <div class="btn-group">
+          <button type="button" class="btn btn-success dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">Accounts
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Log in</a>
+            <a class="dropdown-item" href="#">My Orders</a>
+            <a class="dropdown-item" href="#">Shopping Cart</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Log Out</a>
+          </div>
+        </div>
+        <div class="cart-icon">
+            <a href="#"><i class="fas fa-shopping-cart cart-icon__i"></i></a>
         </div>
       </div>
-      <div class="cart-icon">
-          <a href="#"><i class="fas fa-shopping-cart cart-icon__i"></i></a>
-      </div>
-    </div>
-  </nav>
+    </nav>
+  </template>
 
-      <!-- <p class="login--changed">Would you use your logined account? Or switch to another?</p>    
-      <a href="#" class="btn btn__log--in">LOG IN</a>
-      <a href="#" class="btn btn__log--to-this">USE MINE</a>
-      <a href="#" class="btn btn__log--to-other">CHANGE ACCOUNT</a> --> 
-  </div>
-
+  <template id="test">
+    <p>teshthehsthhsethseh essetestse</p>
+  </template>
+  
   <!-- carousel -->
+  <template id="main-header">
   <div class="main-header">
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
@@ -118,78 +114,44 @@
       </div>
     </div>
   </div>
+  </template>
 
   <!-- product page -->
-  <section class="new-products">
-    <div class="rows">
-      <h2>New Arrivals</h2>
-    </div>
-    <div class="rows">
-      <div class="new-products-list">
-        <div class="new-products-items card">
-          <img src="images/slide-1.jpg" alt="New Item 01">
-          <div class="new-products-items__card">
-            <p class="new-products-items__title">Fashion <span class="badge badge-danger">Hot</span></p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <span class="list-group-item__unitPrice">$20.00</span>
-              <span class="list-group-item__marketPrice"><strong>$10.00</strong></span>
-            </li>
-          </ul>
-          <div class="new-products-items__card">
-            <a href="#" class="card-link btn btn-success">Add Cart</a>
-          </div>
-        </div>
-        <div class="new-products-items card">
-          <img src="images/slide-1.jpg" alt="New Item 01">
-          <div class="new-products-items__card">
-            <p class="new-products-items__title">Fashion <span class="badge badge-danger">Hot</span></p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <span class="list-group-item__unitPrice">$20.00</span>
-              <span class="list-group-item__marketPrice"><strong>$10.00</strong></span>
-            </li>
-          </ul>
-          <div class="new-products-items__card">
-            <a href="#" class="card-link btn btn-success">Add Cart</a>
-          </div>
-        </div>
-        <div class="new-products-items card">
-          <img src="images/slide-1.jpg" alt="New Item 01">
-          <div class="new-products-items__card">
-            <p class="new-products-items__title">Fashion </p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <span class="list-group-item__unitPrice">$20.00</span>
-              <span class="list-group-item__marketPrice"><strong>$10.00</strong></span>
-            </li>
-          </ul>
-          <div class="new-products-items__card">
-            <a href="#" class="card-link btn btn-success">Add Cart</a>
-          </div>
-        </div>
-        <div class="new-products-items card">
-          <img src="images/slide-1.jpg" alt="New Item 01">
-          <div class="new-products-items__card">
-            <p class="new-products-items__title">Fashion </p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <span class="list-group-item__unitPrice">$20.00</span>
-              <span class="list-group-item__marketPrice"><strong>$10.00</strong></span>
-            </li>
-          </ul>
-          <div class="new-products-items__card">
-            <a href="#" class="card-link btn btn-success">Add Cart</a>
-          </div>
-        </div>
+  <template id="new-products">
+    <section class="new-products">
+      <div class="rows">
+        <h2>New Arrivals</h2>
+      </div>
+      <div class="rows">
+        <!-- 삽입! -->
+        <div class="new-products-list"></div>
+        <!-- 삽입! -->
+      </div>
+    </section>
+  </template>
+
+  <!-- product page item list template  * 4 -->
+  <template id="new-products-list">
+    <div class="new-products-items card">
+      <img src="images/slide-1.jpg" alt="New Item 01" class="img">
+      <div class="new-products-items__card">
+        <span class="new-products-items__title"></span>
+        <span class="new-products-badge badge badge-success">New</span>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          $<span class="list-group-item__unitPrice"></span>
+          <strong>$<span class="list-group-item__marketPrice"></span></strong>
+        </li>
+      </ul>
+      <div class="new-products-items__card">
+        <a href="#" class="card-link btn btn-success">View Detail</a>
       </div>
     </div>
-  </section>
+  </template>
 
+  <!-- subscribe template -->
+  <template id="subscribes">
   <section class="subscribes">
     <div class="rows">
       <h2>Subscribe Our Weekly News</h2>
@@ -210,18 +172,20 @@
     </div>
     </div>
   </section>
+  </template>
 
   <!-- 제품 리스트 페이지 -->
-  <!-- <template id="product-list-view"> -->
+  <template id="product-page">
     <section class="product-page">
       <div class="columns">
         <div class="column is-one-fifth product-category">
           <ul class="list-group">
-            <li class="list-group-item list-group-item-action"><a href="#">Dresses</a></li>
-            <li class="list-group-item list-group-item-action"><a href="#">Shose</a></li>
+            <li class="list-group-item list-group-item-action"><a href="#">All</a></li>
+            <li class="list-group-item list-group-item-action"><a href="#">Dress</a></li>
+            <li class="list-group-item list-group-item-action"><a href="#">Coat</a></li>
+            <li class="list-group-item list-group-item-action"><a href="#">Shoes</a></li>
             <li class="list-group-item list-group-item-action"><a href="#">Bags</a></li>
-            <li class="list-group-item list-group-item-action"><a href="#">Jackets</a></li>
-            <li class="list-group-item list-group-item-action"><a href="#">T-Shirts</a></li>
+            <li class="list-group-item list-group-item-action"><a href="#">Shirts</a></li>
           </ul>
         </div>
         <div class="column product-container">
@@ -232,85 +196,56 @@
               <button type="submit" class="btn btn-secondary">Search
             </p>
           </div>
-          <div class="product-page__items">
-            <!-- startline of list *3 // paste -->
-            <div class="columns">
-              <div class="column product-page__li">
-                <div class="product-page__box card">
-                  <div class="img-box">
-                    <img src="images/slide-1.jpg" alt="New Item 01">
-                    <div class="field img-box__dropdown">
-                      <div class="control">
-                        <div class="select is-success">
-                          <select>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <a href="#" class="img-box__btn card-link btn btn-success">Add Cart</a>
-                  </div>
-                  <div class="product-page__card">
-                    <p class="product-page__title">Fashion </p>
-                  </div>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                      <span class="list-group-item__unitPrice">$20.00</span>
-                      <span class="list-group-item__marketPrice"><strong>$10.00</strong></span>
-                    </li>
-                    <li class="list-group-item">
-                      Options : 
-                      <p class="list-group-item__variants">Colors : <span class="list-group-item__color">3</span></p>
-                      <p class="list-group-item__variants">Size : <span class="list-group-item__size">2</span></p>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="column product-page__li">
-                <div class="product-page__box card">
-                  <div class="img-box">
-                    <img src="images/slide-1.jpg" alt="New Item 01">
-                    <a href="#" class="img-box__btn card-link btn btn-success">Add Cart</a>
-                  </div>
-                  <div class="product-page__card">
-                    <p class="product-page__title">Fashion </p>
-                  </div>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                      <span class="list-group-item__unitPrice">$20.00</span>
-                      <span class="list-group-item__marketPrice"><strong>$10.00</strong></span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="column product-page__li">
-                <div class="product-page__box card">
-                  <div class="img-box">
-                    <img src="images/slide-1.jpg" alt="New Item 01">
-                    <a href="#" class="img-box__btn card-link btn btn-success">Add Cart</a>
-                  </div>
-                  <div class="product-page__card">
-                    <p class="product-page__title">Fashion </p>
-                  </div>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                      <span class="list-group-item__unitPrice">$20.00</span>
-                      <span class="list-group-item__marketPrice"><strong>$10.00</strong></span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <!-- endline of list *3 // paste -->
-          </div>
+          <!-- 삽입! -->
+          <div class="product-page-list"></div>
+          <!-- 삽입! -->
         </div>
       </div>
     </section>
-  <!-- </template> -->
+  </template>
+
+  <template id="product-page-list">
+    <!-- startline of list *3 // paste -->   
+    <div class="column is-one-third product-page__li">
+      <div class="product-page__box card">
+        <div class="img-box">
+          <img src="images/slide-1.jpg" alt="New Item 01" class="img">
+          <div class="field img-box__dropdown">
+            <div class="control">
+              <div class="select is-success">
+                <select class="option-list" name="quantity">
+                  <option class="option-list-num" value="1">1</option>
+                  <option class="option-list-num">2</option>
+                  <option class="option-list-num">3</option>
+                  <option class="option-list-num">4</option>
+                  <option class="option-list-num">5</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <a href="#" class="img-box__btn card-link btn btn-success">Add Cart</a>
+        </div>
+        <div class="product-page__card">
+          <p class="product-page__title">Fashion </p>
+          <p class="product-page__desc">Fashion </p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            $<span class="list-group-item__unitPrice"></span>
+            <strong>$<span class="list-group-item__marketPrice"></span></strong>
+          </li>
+          <li class="list-group-item">
+            Options : 
+            <p class="list-group-item__variants">Colors : <span class="list-group-item__color">3</span></p>
+            <p class="list-group-item__variants">Size : <span class="list-group-item__size">2</span></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- endline of list *3 // paste -->
+  </template>
+
+
 
   <!-- 로그인 페이지 -->
   <template id="login">
