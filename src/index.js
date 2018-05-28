@@ -19,6 +19,8 @@ const templates = {
   attributeColor: document.querySelector('#attribute-list-color').content,
   attributeSize: document.querySelector('#attribute-list-size').content,
   reviewList: document.querySelector('#review-list').content,
+  cartPage: document.querySelector('#cart-page').content,
+  cartPageList: document.querySelector('#cart-page-list').content,
 }
 
 // Avoid code duplication
@@ -51,6 +53,11 @@ async function nav() {
   nav.querySelector('.nav-link__btn-product').addEventListener("click", e => { 
     rootEl.textContent = '' 
     productPage()
+  })
+  
+  nav.querySelector('.cart-icon').addEventListener("click", e => {
+    rootEl.textContent = ''
+    cartPage()
   })
   render(nav)
 }
@@ -156,8 +163,7 @@ async function productDetailPage(productId) {
   // 가격 계산
   const inputEl = fragment.querySelector('.option-quantity')
   inputEl.addEventListener("change", e => {
-    let quatity = document.querySelector('.option-quantity')
-    let itemQtt = quatity.value
+    let itemQtt = inputEl.value
     const taxRate = 0.06875
     let itemPrice = res.data.marketPrice
     let itemSubtotal = itemPrice * parseInt(itemQtt)
@@ -172,6 +178,8 @@ async function productDetailPage(productId) {
   const selectElColor = fragment.querySelector('.attribute-list-color')
   const selectElSize = fragment.querySelector('.attribute-list-size')
   const AttrRemain = fragment.querySelector('.option-quantity-remain')
+  const AttrSKU = fragment.querySelector('.product-detail-page__sku')
+
   let currentColor = ""
   let currentSize = ""
   // attribute loads
@@ -197,36 +205,50 @@ async function productDetailPage(productId) {
 
       currentColor = attribute.color.toString()
       currentSize = attribute.size.toString()
-      AttrRemain.textContent = attribute.quantity    
+      AttrRemain.textContent = attribute.quantity
+      AttrSKU.textContent = attribute.attrSKU
+
+      if(attribute.quantity === 0) { 
+        inputEl.setAttribute("disabled", "disabled")
+        inputEl.value = "0"
+      } else 
+      inputEl.setAttribute("max", `${attribute.quantity}`)    
     }
   })
 
-  selectElColor.addEventListener("change", e => {
-    currentColor = selectElColor.value
-    console.log(currentColor, currentSize)
-    for (const {color, size, quantity} of attRes.data) {
+  function attrUpdate() {
+    for (const {color, size, quantity, attrSKU} of attRes.data) {
       if(res.data.id === productId) {
         if(currentColor === color && currentSize === size.toString()) {
           AttrRemain.textContent = quantity
+          AttrSKU.textContent = attrSKU
+          if(quantity == 0) { 
+            inputEl.value = "0" 
+            inputEl.setAttribute("disabled", "disabled")
+          } else {
+          inputEl.removeAttribute("disabled")
+          inputEl.value = "1"
+          inputEl.setAttribute("max", `${quantity}`)    
+          }
           break
         }
-        else { AttrRemain.textContent = "no"  }
+        else { 
+          AttrRemain.textContent = "no" 
+          inputEl.value = "0" 
+          inputEl.setAttribute("disabled", "disabled")
+        }
       }
     }
+  }
+
+  selectElColor.addEventListener("change", e => {
+    currentColor = selectElColor.value
+    attrUpdate()
   })
 
   selectElSize.addEventListener("change", e => {
     currentSize = selectElSize.value
-    console.log(currentColor, currentSize)
-    for (const {color, size, quantity} of attRes.data) {
-      if(res.data.id === productId) {
-        if(currentColor === color && currentSize === size.toString()) {
-          AttrRemain.textContent = quantity
-          break
-        }
-        else { AttrRemain.textContent = "no"  }
-      }
-    }
+    attrUpdate()
   })
   
   
@@ -245,6 +267,21 @@ async function productDetailPage(productId) {
   render(fragment)
 }
 
+async function cartPage() {
+  nav()
+  const res = await ecommerceAPI.get(`/carts`)
+
+  const cartFragment = document.importNode(templates.cartPage, true)
+  const fragment = document.importNode(templates.cartPageList, true)
+  
+  res.data.forEach(cart => {
+
+    cartFragment.querySelector('.cart-page-list').appendChild(fragment)
+  })
+  
+
+  render(cartFragment)
+}
 
 
 

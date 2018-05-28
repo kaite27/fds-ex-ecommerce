@@ -45,7 +45,8 @@
           </div>
         </div>
         <div class="cart-icon">
-            <a href="#"><i class="fas fa-shopping-cart cart-icon__i"></i></a>
+          <a href="#"><i class="fas fa-shopping-cart cart-icon__i"></i></a>
+          <span class="badge badge-circle cart-item__cnt">3</span>
         </div>
       </div>
     </nav>
@@ -231,7 +232,6 @@
     </div>
   </template>
 
-
   <template id="product-page-detail">
     <section class="product-page-detail">
       <div class="rows">
@@ -287,7 +287,7 @@
                 <div class="control">
                   <span class="list-group-item__variants">Quantity :</span>
                   <div class="input is-success">
-                    <input type="number" name="quantity" class="option-quantity" min="1" value="1">
+                    <input type="number" name="quantity" class="input option-quantity" min="1" value="1">
                   </div>
                   <span> <span class="option-quantity-remain">10</span> item(s) left</span>
                 </div>
@@ -361,22 +361,6 @@
     </div>
   </template>
 
-  <!-- 퀀티티 에드 카드 버튼 -->
-  <!-- <div class="field img-box__dropdown">
-      <div class="control">
-        <div class="select is-success">
-          <select class="option-list" name="quantity">
-            <option class="option-list-num" value="1">1</option>
-            <option class="option-list-num">2</option>
-            <option class="option-list-num">3</option>
-            <option class="option-list-num">4</option>
-            <option class="option-list-num">5</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  -->
-
 
   <!-- 로그인 페이지 -->
   <template id="login">
@@ -390,6 +374,65 @@
     </div>
   </template>
 
+  <!-- 카트 전체 페이지 -->
+  <template id="cart-page">
+    <section class="cart-page">
+      <div class="rows">
+        <h2 class="cart-page__title">My Shopping Cart List</h2>
+      </div>
+      <div class="rows">
+        <div class="cart-page__item">
+          <div class="column-labels">
+            <label class="product-image">Image</label>
+            <label class="product-details">Product</label>
+            <label class="product-price">Price</label>
+            <label class="product-quantity">Quantity</label>
+            <label class="product-add">Add</label>
+            <label class="product-removal">Remove</label>
+            <label class="product-line-price">Total</label>
+          </div>
+          <!-- 삽입! -->
+          <div class="product cart-page-list"></div>
+          <!-- 삽입!  -->
+          <div class="totals">
+              <div class="totals-item">
+                <label>Subtotal</label>
+                <div class="totals-value" id="cart-subtotal">219.22</div>
+              </div>
+              <div class="totals-item">
+                <label>Tax (7.5%)</label>
+                <div class="totals-value" id="cart-tax">16.45</div>
+              </div>
+              <div class="totals-item totals-item-total">
+                <label>Grand Total</label>
+                <div class="totals-value" id="cart-total">235.67</div>
+              </div>
+            </div>
+          <button class="checkout">Checkout</button>
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <template id="cart-page-list">
+    <div class="product-image">
+        <img src="images/slide-1.jpg">
+    </div>
+    <div class="product-details">
+      <div class="product-title">Leather Coat</div>
+    </div>
+    <div class="product-price">59.87</div>
+    <div class="product-quantity">
+      <input type="number" value="1" min="0">
+    </div>
+    <div class="product-add">
+      <button class="add-product">Add to Cart</button>
+    </div>
+    <div class="product-removal">
+      <button class="remove-product">Remove</button>
+    </div>
+    <div class="product-line-price">59.87</div>
+  </template>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

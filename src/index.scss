@@ -151,12 +151,23 @@ section {
 
 /* ---------- cart setting ----------- */
 .cart-icon {
+  position: relative;
   &__i {
     font-size: 1.8rem;
     margin-left: 15px;
   }
 }
 
+.badge-circle {
+  font-size: 1rem;
+  background-color: red;
+  border-radius: 50px;
+  color: #fff;
+  display: inline-block;
+  position: absolute;
+  top: -30%;
+  left: 75%;
+}
 
 /* ---------- header carouser setting ---------- */
 .main-header {
@@ -371,6 +382,9 @@ section {
   }
   &-quantity {
     border: 0;
+    box-shadow: 0 0 0;
+    padding: 0;
+    height: auto;
   }
 }
 
@@ -385,11 +399,110 @@ section {
 
 .input {
   width: 200px;
-  display: inline-block;
 }
 
 // 제품 상세 페이지 하단 탭 메뉴 컨트롤
 .tab-content {
   width: 90%;
   margin: 40px auto;
+}
+
+
+/* --------- 카트 페이지 셋팅 DONT TOUCH ---------- */
+.product-image { float: left; width: 20%; }
+.product-details { float: left; width: 37%; }
+.product-price { float: left; width: 12%; }
+.product-quantity { float: left; width: 10%; }
+.product-add { float: left; width: 9%; }
+.product-removal { float: left; width: 9%; }
+
+/* Apply dollar signs */
+.product .product-price:before, .product .product-line-price:before, .totals-value:before { content: '$'; }
+
+.group:before, .group:after {
+    content: '';
+    display: table;
+} 
+.group:after { clear: both; }
+.group { zoom: 1; }
+
+.shopping-cart, .column-labels, .product, .totals-item {
+  @extend .group;
+}
+
+/* Column headers */
+.column-labels {
+  label {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #999;
+  }  
+  .product-image, .product-details, .product-removal {
+    text-indent: -9999px;
+  }
+}
+
+/* Product entries */
+.product {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #999;
+  .product-image {
+    text-align: center;
+    img {
+      width: 100px;
+    }
+  }  
+  .product-details {
+    .product-title {
+      margin-right: 20px;
+    }
+    .product-description {
+      margin: 5px 20px 5px 0;
+      line-height: 1.4em;
+    }
+  }  
+  .product-quantity {
+    input { width: 40px; }
+  }  
+  .add-product {
+    border: 0;
+    padding: 4px 8px;
+    background-color: #00ff00;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 3px;
+    &:hover { background-color: #006400; }
+  }
+}
+
+.remove-product {
+  border: 0;
+  padding: 4px 8px;
+  background-color: #c66;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 3px;
+  &:hover { background-color: #a44; }
+}
+
+/* Totals section */
+.totals {
+  .totals-item {
+    float: right;
+    clear: both;
+    width: 100%;
+    margin-bottom: 10px;
+    label {
+      float: left;
+      clear: both;
+      width: 79%;
+      text-align: right;
+    }
+    .totals-value {
+      float: right;
+      width: 21%;
+      text-align: right;
+    }
+  }
 }
