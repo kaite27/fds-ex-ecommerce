@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { freemem } from 'os';
 
-const ecommerceAPI = axios.create({
-  baseURL: process.env.API_URL
-})
+const ecommerceAPI = axios.create({ baseURL: process.env.API_URL })
 
 const rootEl = document.querySelector('.root')
 
@@ -17,12 +15,15 @@ const templates = {
   productPage: document.querySelector('#product-page').content,
   productPageList: document.querySelector('#product-page-list').content,
   login: document.querySelector('#login').content,
+  productDetail: document.querySelector('#product-page-detail').content,
+  attributeColor: document.querySelector('#attribute-list-color').content,
+  attributeSize: document.querySelector('#attribute-list-size').content,
+  reviewList: document.querySelector('#review-list').content,
 }
 
 // Avoid code duplication
 function render(fragment) {
   // rootEl.textContent = '' 
-  // debugger
   rootEl.appendChild(fragment)
 }
 
@@ -54,6 +55,7 @@ async function nav() {
   render(nav)
 }
 
+// 이커머스 메인 웹사이트 페이지 
 async function indexPage() {
   nav()
   const res = await ecommerceAPI.get('/products')
@@ -88,7 +90,7 @@ function avoid(arr) {
   })
 }
 
-// 앱 실행 페이지
+// 프로덕트 전체 리스트 페이지
 async function productPage() {
   nav()
   const attRes = await ecommerceAPI.get('/attributes?_expand=product')
@@ -105,6 +107,7 @@ async function productPage() {
     const marketPrice = fragment.querySelector('.list-group-item__marketPrice')
     const colorCnt = fragment.querySelector('.list-group-item__color')
     const sizeCnt = fragment.querySelector('.list-group-item__size')
+    const productDetail = fragment.querySelector('.link-to-product-detail')
 
     itemTitle.textContent = product.productTitle
     itemDesc.textContent = product.productDesc
@@ -119,18 +122,131 @@ async function productPage() {
         colorCnt.textContent = arrColor.filter(function(item, i, arr){
           return i == arr.indexOf(item)
         })
-
         arrSize.push(' ' + attribute.size)
         sizeCnt.textContent = arrSize.filter(function(item, i, arr){
           return i == arr.indexOf(item)
         })
       }
     })
-
     productPage.querySelector('.product-page-list').appendChild(fragment)    
+
+    productDetail.addEventListener("click", e => {
+      rootEl.textContent = '' 
+      productDetailPage(product.id)
+    })
   })
   render(productPage)
 }
+
+// 프로덕트 상세 페이지 
+async function productDetailPage(productId) {
+  nav()
+  const res = await ecommerceAPI.get(`/products/${productId}`)
+  const attRes = await ecommerceAPI.get('/attributes?_expand=product')
+
+  const fragment = document.importNode(templates.productDetail, true)
+  // product
+  const itemTitle = fragment.querySelector('.product-detail-page__title')
+  const itemDesc = fragment.querySelector('.product-detail-page__desc')
+  // 가격
+  const subTotal = fragment.querySelector('.price-subtotal__value')
+  const tax = fragment.querySelector('.price-tax__value')
+  const total = fragment.querySelector('.price-total__value')
+
+  // 가격 계산
+  const inputEl = fragment.querySelector('.option-quantity')
+  inputEl.addEventListener("change", e => {
+    let quatity = document.querySelector('.option-quantity')
+    let itemQtt = quatity.value
+    const taxRate = 0.06875
+    let itemPrice = res.data.marketPrice
+    let itemSubtotal = itemPrice * parseInt(itemQtt)
+    let taxs = taxRate * itemSubtotal
+    let totals = itemSubtotal + taxs
+
+    subTotal.textContent = itemSubtotal.toFixed(2)
+    tax.textContent = taxs.toFixed(2)
+    total.textContent = totals.toFixed(2)
+  })
+
+  const selectElColor = fragment.querySelector('.attribute-list-color')
+  const selectElSize = fragment.querySelector('.attribute-list-size')
+  const AttrRemain = fragment.querySelector('.option-quantity-remain')
+  let currentColor = ""
+  let currentSize = ""
+  // attribute loads
+  attRes.data.forEach(attribute => {
+    const colorFragment = document.importNode(templates.attributeColor, true)
+    const sizeFragment = document.importNode(templates.attributeSize, true)
+    
+    if(res.data.id === attribute.productId) {
+      const optionElColor = colorFragment.querySelector('.attribute-item-color')
+      const optionElSize = sizeFragment.querySelector('.attribute-item-size')
+
+      optionElColor.textContent = attribute.color
+      optionElSize.textContent = attribute.size
+
+      optionElColor.setAttribute("value", `${attribute.color}`)
+      optionElSize.setAttribute("value", `${attribute.size}`)
+      optionElColor.setAttribute("selected", "selected")
+      optionElSize.setAttribute("selected", "selected")
+
+      // 중복 제거 후 짚어넣기 
+      selectElColor.appendChild(colorFragment)
+      selectElSize.appendChild(sizeFragment)
+
+      currentColor = attribute.color.toString()
+      currentSize = attribute.size.toString()
+      AttrRemain.textContent = attribute.quantity    
+    }
+  })
+
+  selectElColor.addEventListener("change", e => {
+    currentColor = selectElColor.value
+    console.log(currentColor, currentSize)
+    for (const {color, size, quantity} of attRes.data) {
+      if(res.data.id === productId) {
+        if(currentColor === color && currentSize === size.toString()) {
+          AttrRemain.textContent = quantity
+          break
+        }
+        else { AttrRemain.textContent = "no"  }
+      }
+    }
+  })
+
+  selectElSize.addEventListener("change", e => {
+    currentSize = selectElSize.value
+    console.log(currentColor, currentSize)
+    for (const {color, size, quantity} of attRes.data) {
+      if(res.data.id === productId) {
+        if(currentColor === color && currentSize === size.toString()) {
+          AttrRemain.textContent = quantity
+          break
+        }
+        else { AttrRemain.textContent = "no"  }
+      }
+    }
+  })
+  
+  
+  
+
+  // 탭
+  const tabDetail = fragment.querySelector('#detail')
+  const tabReview = fragment.querySelector('#review')
+
+  itemTitle.textContent = res.data.productTitle
+  itemDesc.textContent = res.data.productDesc
+  subTotal.textContent = res.data.marketPrice.toFixed(2)
+  tax.textContent = ((res.data.marketPrice) * 0.06875).toFixed(2)
+  total.textContent = (res.data.marketPrice * ( 0.06875 + 1 )).toFixed(2)
+
+  render(fragment)
+}
+
+
+
 
 // 로그인 페이지 실행
 // async function loginPage() {

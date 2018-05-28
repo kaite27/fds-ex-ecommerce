@@ -25,9 +25,24 @@ $color-blue: dodgerblue;
   clip: rect(0,0,0,0);
   font-size: 0;
   line-height: 0;
+  &-text {
+    font-size: 0;
+    color: transparent;
+    background-color: transparent;
+    border: 0;
+  }
 }
 
-/* basic setting */
+.divider {
+  height: 1px;
+  width: 100%;
+  display:block; /* for use on default inline elements like span */
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+
+/* ---------- basic setting----------- */
 * {
   margin: 0;
   padding: 0;
@@ -45,7 +60,7 @@ h2 {
   font-size: 2rem;
 }
 
-/* layout control */
+/* ---------- layout control----------- */
 .w-100 {
   height: 400px;
 }
@@ -60,7 +75,7 @@ section {
   padding: 10px 0;
 }
 
-// loading indicator
+/* ---------- loading indicator ----------- */
 .root {
   &--loading {
     &::after {
@@ -77,7 +92,7 @@ section {
   }
 }
 
-// button setting
+/* ---------- button setting ----------- */
 .btn {
 
   /* dropdown button control */
@@ -86,6 +101,7 @@ section {
     justify-content: flex-end;
     width: calc(100% - 220px);
   }
+  /* login/out button control */
   &__log {
     &--in {
       .root--authed & {
@@ -101,7 +117,7 @@ section {
   }
 }
 
-// nav setting 
+/* ---------- navigation setting ----------- */
 .nav {
   &bar { 
     position: sticky; 
@@ -112,13 +128,13 @@ section {
     bottom: 0;
     width: 100%; 
   }
-  &-item:nth-child(2n) { width: 105px; } 
+  &-item:nth-child(2n) { width: 113px; } 
+  &-tabs { margin-left: 30px; }
 }
-
-
+// navigation dropdown button 
 .dropdown-menu { left: auto; }
 
-// required??
+// navigation dropdown button - login 
 .login {
   &--required {
     .root--authed & {
@@ -133,6 +149,7 @@ section {
   }
 }
 
+/* ---------- cart setting ----------- */
 .cart-icon {
   &__i {
     font-size: 1.8rem;
@@ -141,7 +158,7 @@ section {
 }
 
 
-/* header carouser setting */
+/* ---------- header carouser setting ---------- */
 .main-header {
   display: grid;
   grid-template-areas: "cr one two" "cr three four";
@@ -149,7 +166,7 @@ section {
   grid-template-rows: 200px 200px;
   width: 100%;
 }
-
+// 4개 광고 패널 컨트롤 
 .events {
   overflow: hidden;
   position: relative;
@@ -166,10 +183,11 @@ section {
     transform: translateX(-50%);
   }
 } 
-
+// 큰 광고 패널 컨트롤
 .carousel { grid-area: cr; }
 
-/* new-products */
+
+/* ---------- new-products ----------- */
 .new-products {
   position: relative;
   &-list {
@@ -207,9 +225,14 @@ section {
   &__marketPrice {
     font-size: 1.2rem;
   }
+  &__variants {
+    display: inline-block;
+    font-size: 1.1rem;
+    width: 100px;
+  }
 }
 
-/* Subscribes */
+/* ------------ Subscribes ----------- */
 .subscribes {
   background-color: cornflowerblue;
   background-image: url("images/slide-1.jpg");
@@ -226,12 +249,12 @@ section {
   &-form { padding: 20px 0 50px 0 ; }
 }
 
+/* ------------ Product Page ----------- */
 // search bar
 .search {
   &-control { margin-bottom: 15px; }
   &-bar { width: 300px; }
 }
-
 
 // product page 페이지 
 .product-page {
@@ -240,6 +263,7 @@ section {
     width: 33% !important;
   }
   &__box {
+    position: relative;
     text-align: center;
     border: 0;
   }
@@ -248,21 +272,124 @@ section {
   }
   &__card {
     margin: 7px 0 0;
+    padding: 0 10px;
+  }
+}
+// Image Box
+.img {
+  &-box {
+    position: relative;
+    margin: 0 auto;
+    width: 90%;
+    margin-top: 13px;
+    // z-index: 2; 이미지 태그에 앵커 따로 걸 경우 해제!
+    &__btn, &__dropdown {
+      position: absolute;
+      top: 80%;
+      left: 60%;
+    }
+    &__dropdown {
+      left: 35%;
+    }
+  }
+  &-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    &__list {
+      width: 31%;
+      height: 100%;
+      margin-top: 10px;
+    }
   }
 }
 
-.img-box {
-  position: relative;
-  margin: 0 auto;
+// 프로덕트 리스트 전체 앵커 걸기 
+.link-to-product-detail {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* ------------ 제품 상세 페이지 ----------- */
+.product {
+  &-info-box {
+    width: 70%;
+    margin-top: 13px;
+  }
+  &-detail-page {
+    &__sku {
+      font-size: 0.9rem;
+      color: #999;
+    }
+    &__title {
+      font-size: 2.2rem;
+      margin: 7px 0;
+    }
+  }
+}
+
+// 제품 상세 페이지 가격 인디케이터
+.price {
+  &-tab {
+    display: inline-block;
+    width: 150px;
+    &:nth-child(2n) {
+      width: 60px;
+      background-color: #e9e9e9;
+      text-align: right;
+      font-weight: 600;
+    }
+  }
+  &-subtotal {
+    margin-top: 15px;
+  }
+  &-total {
+    margin: 5px 0 15px 0;
+    &__text, &__value {
+      color: $color-blue;
+      font-size: 1.2rem;
+    }
+  }
+  &-tax__text {
+    span {
+      color: #999;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// 수량, 색상, 사이즈 dropdown option controls
+.option {
+  &-list {
+    font-size: 1.1rem;
+    min-width: 200px;
+  }
+  &-quantity {
+    border: 0;
+  }
+}
+
+.field {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+  &:first-child {
+    margin-top: 20px;
+  }
+}
+
+.input {
+  width: 200px;
+  display: inline-block;
+}
+
+// 제품 상세 페이지 하단 탭 메뉴 컨트롤
+.tab-content {
   width: 90%;
-  margin-top: 13px;
-  &__btn, &__dropdown {
-    position: absolute;
-    top: 80%;
-    left: 60%;
-  }
-  &__dropdown {
-    left: 35%;
-  }
+  margin: 40px auto;
 }
-

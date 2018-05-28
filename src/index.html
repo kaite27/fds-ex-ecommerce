@@ -131,7 +131,7 @@
   <!-- product page item list template  * 4 -->
   <template id="new-products-list">
     <div class="new-products-items card">
-      <img src="images/slide-1.jpg" alt="New Item 01" class="img">
+      <img class="product-page__img--main" src="images/slide-1.jpg" alt="New Item 01">
       <div class="new-products-items__card">
         <span class="new-products-items__title"></span>
         <span class="new-products-badge badge badge-success">New</span>
@@ -175,6 +175,7 @@
   <!-- 제품 리스트 페이지 -->
   <template id="product-page">
     <section class="product-page">
+      <div class="rows">
       <div class="columns">
         <div class="column is-one-fifth product-category">
           <ul class="list-group">
@@ -199,29 +200,17 @@
           <!-- 삽입! -->
         </div>
       </div>
+    </div>
     </section>
   </template>
 
   <template id="product-page-list">
-    <!-- startline of list *3 // paste -->   
     <div class="column is-one-third product-page__li">
-      <div class="product-page__box card">
+      <div class="product-page__box card"><a class="link-to-product-detail" href="#"></a>
         <div class="img-box">
-          <img src="images/slide-1.jpg" alt="New Item 01" class="img">
-          <div class="field img-box__dropdown">
-            <div class="control">
-              <div class="select is-success">
-                <select class="option-list" name="quantity">
-                  <option class="option-list-num" value="1">1</option>
-                  <option class="option-list-num">2</option>
-                  <option class="option-list-num">3</option>
-                  <option class="option-list-num">4</option>
-                  <option class="option-list-num">5</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <a href="#" class="img-box__btn card-link btn btn-success">Add Cart</a>
+          <img clas="product-page__img--main" src="images/slide-1.jpg" alt="New Item 01">
+          <a href="#" class="img-box__btn card-link btn btn-success"><i class="icon-wish far fa-heart"></i> Wish</a>
+          <!-- far -> fas 풀컬러 -->
         </div>
         <div class="product-page__card">
           <p class="product-page__title"></p>
@@ -240,9 +229,153 @@
         </ul>
       </div>
     </div>
-    <!-- endline of list *3 // paste -->
   </template>
 
+
+  <template id="product-page-detail">
+    <section class="product-page-detail">
+      <div class="rows">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+          <ul>
+            <li class="breadcrumb-home"><a href="#">Home</a></li>
+            <li class="breadcrumb-product"><a href="#">Products</a></li>
+            <li class="breadcrumb-category"><a href="#">category</a></li>
+            <li class="is-active breadcrumb-sku"><a href="#" aria-current="page">productSKU</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="rows">
+        <div class="columns">
+          <div class="column is-one-third">
+            <div class="img-box">
+              <img class="product-page__img--main" src="images/slide-1.jpg" alt="Detail">
+              <div class="img-container">
+                <img class="img-container__list" src="images/slide-1.jpg" alt="Detail">
+                <img class="img-container__list" src="images/slide-1.jpg" alt="Detail">
+                <img class="img-container__list" src="images/slide-1.jpg" alt="Detail">
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="product-info-box">
+              <p class="product-detail-page__sku">SKU 242423243</p>
+              <p class="product-detail-page__title"></p>
+              <p class="product-detail-page__desc"></p>
+              <form method="POST">
+                <div class="field">
+                  <div class="control">
+                  <span class="list-group-item__variants">Colors :</span>
+                  <div class="select is-success">
+                    <!-- 삽입! -->
+                    <select class="option-list attribute-list-color" name="color" id="color"></select>
+                    <!-- 삽입! -->
+                  </div>
+                </div>
+              </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <span class="list-group-item__variants">Size :</span>
+                  <div class="select is-success">
+                    <!-- 삽입! -->
+                    <select class="option-list attribute-list-size" name="size" id="size"></select>
+                    <!-- 삽입! -->
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <span class="list-group-item__variants">Quantity :</span>
+                  <div class="input is-success">
+                    <input type="number" name="quantity" class="option-quantity" min="1" value="1">
+                  </div>
+                  <span> <span class="option-quantity-remain">10</span> item(s) left</span>
+                </div>
+              </div>
+              <div class="price-info">
+                <div class="divider"></div>
+                <div class="price-subtotal">
+                  <span class="price-tab price-subtotal__text">Subtotal</span>
+                  $<span class="price-tab price-subtotal__value"></span>
+                </div>
+                <div class="price-tax">
+                  <span class="price-tab price-tax__text">Salse Tax <span>(6.875%)</span></span>
+                  $<span class="price-tab price-tax__value"></span>
+                </div>
+                <div class="price-total">
+                  <span class="price-tab price-total__text">Total</span>
+                  $<span class="price-tab price-total__value"></span>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <input type="submit" class="btn btn_submit--cart" value="Add cart">
+              <input type="submit" class="btn btn_submit--checkout" value="Checkout">
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="rows">
+          <div class="comment-box">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="detail-tab" data-toggle="tab" href="#detail" role="tab" aria-controls="detail" aria-selected="true">Detail</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Reviews (<span class="review-count">4</span>)</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="policy-tab" data-toggle="tab" href="#policy" role="tab" aria-controls="policy" aria-selected="false">Return Policy</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">...</div>
+              <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                <!-- 삽입 -->
+                <div class="review-list"></div>
+                <!-- 삽입 -->
+              </div>
+              <div class="tab-pane fade" id="policy" role="tabpanel" aria-labelledby="policy-tab"><p>1. Returns <br /><br /> Option 1 – No Refunds/Exchanges: We do not accept returns or exchanges unless the item you purchased is defective. If you receive a defective item, please contact us at with details of the product and the defect. You can send the item you consider defective to: <br /><br /> [Address] <br /><br /> Upon receipt of the returned product, we will fully examine it and notify you via e-mail, within a reasonable period of time, whether you are entitled to a refund or a replacement as a result of the defect. If you are entitled to a replacement or refund, we will replace the product or refund the purchase price, using the original method of payment.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <!-- 어트리뷰트 컬러  -->
+  <template id="attribute-list-color">
+    <option class="option-color attribute-item-color"></option>
+  </template>
+
+  <!-- 어트리뷰트 사이즈  -->
+  <template id="attribute-list-size">
+    <option class="option-size attribute-item-size"></option>
+  </template>
+
+<!-- 리뷰 리스트 저장 -->
+  <template id="review-list">
+    <div class="review-item">
+      <span class="review-username"></span>
+      <span class="review-rating"></span>
+      <span class="review-body"></span>
+    </div>
+  </template>
+
+  <!-- 퀀티티 에드 카드 버튼 -->
+  <!-- <div class="field img-box__dropdown">
+      <div class="control">
+        <div class="select is-success">
+          <select class="option-list" name="quantity">
+            <option class="option-list-num" value="1">1</option>
+            <option class="option-list-num">2</option>
+            <option class="option-list-num">3</option>
+            <option class="option-list-num">4</option>
+            <option class="option-list-num">5</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  -->
 
 
   <!-- 로그인 페이지 -->
