@@ -31,6 +31,9 @@
           <li class="nav-item"><a class="nav-link nav-link__btn-product" href="#">Products</a></li>
           <li class="nav-item"><a class="nav-link nav-link__btn-contact" href="#">Contact us</a></li>
         </ul>
+        <!-- 삽입 -->
+        <div class="username-box">!!!</div>
+        <!-- 삽입 -->
         <div class="btn-group">
           <button type="button" class="btn btn-success dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">Accounts
@@ -40,8 +43,8 @@
             <a class="dropdown-item" href="#">My Orders</a>
             <a class="dropdown-item" href="#">Shopping Cart</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Log in</a>
-            <a class="dropdown-item" href="#">Log Out</a>
+            <a class="dropdown-item btn-log-in" href="#">Log in</a>
+            <a class="dropdown-item btn-log-out" href="#">Log Out</a>
           </div>
         </div>
         <div class="cart-icon">
@@ -223,9 +226,10 @@
             <strong>$<span class="list-group-item__marketPrice"></span></strong>
           </li>
           <li class="list-group-item">
-            Options : 
-            <p class="list-group-item__variants">Colors : <span class="list-group-item__color"></span></p>
-            <p class="list-group-item__variants">Size : <span class="list-group-item__size"></span></p>
+          <p>Options :</p>
+          <div class="divider"></div>
+          <p class="list-group-item__variants">Colors : <span class="list-group-item__color"></span></p>
+          <p class="list-group-item__variants">Size : <span class="list-group-item__size"></span></p>
           </li>
         </ul>
       </div>
@@ -365,7 +369,7 @@
   <!-- 로그인 페이지 -->
   <template id="login">
     <div class="login">
-      <h1 class="login__title">Log in</h1>
+      <p class="title is-2 login__title">Log in</p>
       <form class="login__form">
         <input name="username" type="text" class="login__username">
         <input name="password" type="password" class="login__password">
@@ -378,60 +382,73 @@
   <template id="cart-page">
     <section class="cart-page">
       <div class="rows">
-        <h2 class="cart-page__title">My Shopping Cart List</h2>
+        <p class="title is-2">My Shopping Cart List</p>
       </div>
       <div class="rows">
-        <div class="cart-page__item">
+        <div class="cart-page__item clearfix">
           <div class="column-labels">
             <label class="product-image">Image</label>
             <label class="product-details">Product</label>
             <label class="product-price">Price</label>
-            <label class="product-quantity">Quantity</label>
-            <label class="product-add">Add</label>
+            <label class="product-quantity-box">Quantity</label>
+            <label class="product-subtot">Subtotal</label>
             <label class="product-removal">Remove</label>
-            <label class="product-line-price">Total</label>
           </div>
           <!-- 삽입! -->
           <div class="product cart-page-list"></div>
           <!-- 삽입!  -->
           <div class="totals">
-              <div class="totals-item">
-                <label>Subtotal</label>
-                <div class="totals-value" id="cart-subtotal">219.22</div>
-              </div>
-              <div class="totals-item">
-                <label>Tax (7.5%)</label>
-                <div class="totals-value" id="cart-tax">16.45</div>
-              </div>
-              <div class="totals-item totals-item-total">
-                <label>Grand Total</label>
-                <div class="totals-value" id="cart-total">235.67</div>
-              </div>
+            <div class="totals-item">
+              <label>Subtotal</label>
+              <div class="totals-value" id="cart-subtotal">219.22</div>
             </div>
-          <button class="checkout">Checkout</button>
+            <div class="totals-item">
+              <label>Tax (6.875%)</label>
+              <div class="totals-value" id="cart-tax">16.45</div>
+            </div>
+            <div class="totals-item totals-item-total">
+              <label>Grand Total</label>
+              <div class="totals-value" id="cart-total">235.67</div>
+            </div>
+          </div>
+          <button class="button is-success checkout">Checkout</button>
         </div>
       </div>
     </section>
   </template>
 
   <template id="cart-page-list">
-    <div class="product-image">
+    <div class="product-cart">
+      <div class="product-image">
         <img src="images/slide-1.jpg">
+      </div>
+      <div class="product-details">
+        <div class="product-title"></div>
+        <div class="product-description"></div>
+        <div class="attribute-color"></div>
+        <div class="attribute-size"></div>
+      </div>
+      <div class="product-price"></div>
+      <div class="product-quantity-box">
+        <input class="product-quantity" type="number" value="1" min="0">
+        <button type="submit" class="button is-small update-product">Update</button>
+      </div>
+      <div class="product-subtot"></div>
+      <div class="product-removal">
+        <button type="submit" class="button is-danger remove-product">Remove</button>
+      </div>
+      <div class="divider"></div>
     </div>
-    <div class="product-details">
-      <div class="product-title">Leather Coat</div>
-    </div>
-    <div class="product-price">59.87</div>
-    <div class="product-quantity">
-      <input type="number" value="1" min="0">
-    </div>
-    <div class="product-add">
-      <button class="add-product">Add to Cart</button>
-    </div>
-    <div class="product-removal">
-      <button class="remove-product">Remove</button>
-    </div>
-    <div class="product-line-price">59.87</div>
+  </template>
+
+  <!-- loading page -->
+  <template id="loading-now">
+    <div class="loader">
+      <p class="loading-title"> Loading Awesome</p>
+      <div class="b1"></div>
+      <div class="b2"></div>
+      <div class="b3"></div>
+    </div> 
   </template>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

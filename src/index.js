@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { freemem } from 'os';
+import { ALPN_ENABLED } from 'constants';
 
 const ecommerceAPI = axios.create({ baseURL: process.env.API_URL })
 
@@ -29,8 +30,10 @@ function render(fragment) {
   rootEl.appendChild(fragment)
 }
 
-function login(token) {
+function login(token, localUsername) {
   localStorage.setItem('token', token)
+  localStorage.setItem('username', localUsername)
+
   // postAPI.defaults : 항상 기본으로 동작
   ecommerceAPI.defaults.headers['Authorization'] = `Bearer ${token}`;
   rootEl.classList.add('root--authed')
@@ -38,26 +41,50 @@ function login(token) {
 
 function logout() {
   localStorage.removeItem('token')
+  localStorage.removeItem('username')
+  localStorage.removeItem('userId')
   // 객체의 속성을 지울 때는 delete
   delete ecommerceAPI.defaults.headers['Authorization']
   rootEl.classList.remove('root--authed')
 }
 
 async function nav() {
+  const res = await ecommerceAPI.get(`/users`)
   const nav = document.importNode(templates.navigation, true)
+  const usernameBox = nav.querySelector('.username-box')
+  // localStorage 에 userID 저장하기 
+  for(const {username, id} of res.data) {
+    if(localStorage.getItem('username') === username) {
+      localStorage.setItem('userId', id)
+    }
+  }
+  usernameBox.textContent = (`Welcome ${localStorage.getItem('username')} !`)
+
+  // 홈
   nav.querySelector('.nav-link__btn-home').addEventListener("click", e => {
     rootEl.textContent = '' 
     indexPage();
   })
-
+  // 프로덕트 
   nav.querySelector('.nav-link__btn-product').addEventListener("click", e => { 
     rootEl.textContent = '' 
     productPage()
   })
-  
+  // 카드 아이콘
   nav.querySelector('.cart-icon').addEventListener("click", e => {
     rootEl.textContent = ''
     cartPage()
+  })
+  // 로그인
+  nav.querySelector('.btn-log-in').addEventListener("click", e => {
+    rootEl.textContent = ''
+    loginPage()
+  })
+  // 로그아웃
+  nav.querySelector('.btn-log-out').addEventListener("click", e => {
+    rootEl.textContent = ''
+    logout()
+    indexPage()
   })
   render(nav)
 }
@@ -85,6 +112,8 @@ async function indexPage() {
       newProFrag.querySelector('.new-products-list').appendChild(fragment)
     }
   })
+
+  
   render(mainHeader)
   render(newProFrag)
   render(subscribe)
@@ -267,52 +296,86 @@ async function productDetailPage(productId) {
   render(fragment)
 }
 
+// 카드 페이지
 async function cartPage() {
   nav()
   const res = await ecommerceAPI.get(`/carts`)
-
+  // const productRes = await ecommerceAPI.get(`/products/${productId}`)
+  // const attRes = await ecommerceAPI.get('/attributes?_expand=product')
+  
+  // 카트 페이지
   const cartFragment = document.importNode(templates.cartPage, true)
-  const fragment = document.importNode(templates.cartPageList, true)
   
-  res.data.forEach(cart => {
+  res.data.forEach(cart => { 
+    const fragment = document.importNode(templates.cartPageList, true)
+    const removeBtn = fragment.querySelector('.remove-product')
+    const divEl = fragment.querySelector('.product-cart')
+    
+    // 카트 삭제하기 
+    removeBtn.addEventListener("click", async e => {
+      console.log("delete pressed")
+      divEl.remove();
+      const res = await ecommerceAPI.delete(`/carts/${cart.id}`)
+    })
 
-    cartFragment.querySelector('.cart-page-list').appendChild(fragment)
+    if(cart.userId.toString() === localStorage.getItem('userId')) { 
+    const productTitle = fragment.querySelector('.product-title') 
+    const productDesc = fragment.querySelector('.product-description') 
+    const attributeColor = fragment.querySelector('.attribute-color') 
+    const attributeSize = fragment.querySelector('.attribute-size') 
+    const productPrice = fragment.querySelector('.product-price')
+    const productQtt = fragment.querySelector('.product-quantity')
+    const productSubtotal = fragment.querySelector('.product-subtot')
+    const quantity = fragment.querySelector('.product-quantity')
+
+    productTitle.textContent = cart.productTitle
+    productDesc.textContent = cart.productDesc
+    attributeColor.textContent = cart.color
+    attributeSize.textContent = cart.size
+    productPrice.textContent = cart.marketPrice
+    productQtt.textContent = cart.quantity
+    productSubtotal.textContent = cart.subtotalPrice  
+    quantity.value = cart.quantity
+        
+    cartFragment.querySelector('.cart-page-list').appendChild(fragment) 
+    }
+
   })
-  
-
+    
   render(cartFragment)
 }
 
 
 
 // 로그인 페이지 실행
-// async function loginPage() {
-//   const fragment = document.importNode(templates.login, true)
-//   const formEl = fragment.querySelector('.login__form')
-//   formEl.addEventListener("submit", async e => {
-//     const payload = {
-//       username: e.target.elements.username.value,
-//       password: e.target.elements.password.value
-//     }
-//     e.preventDefault()
-//     rootEl.classList.add('root--loading')
-//     const res = await todoAPI.post('/users/login', payload)
-//     rootEl.classList.remove('root--loading')
+async function loginPage() {
+  const fragment = document.importNode(templates.login, true)
+  const formEl = fragment.querySelector('.login__form')
+  formEl.addEventListener("submit", async e => {
+    const localUsername = e.target.elements.username.value
+    const payload = {
+      username: e.target.elements.username.value,
+      password: e.target.elements.password.value
+    }
+    e.preventDefault()
+    rootEl.classList.add('root--loading')
+    const res = await ecommerceAPI.post('/users/login', payload)
+    rootEl.classList.remove('root--loading')
 
-//     login(res.data.token)
-//     appStartPage()
-//   })
-//   render(fragment)
-// }
+    login(res.data.token, localUsername)
+    rootEl.textContent = '' 
+    indexPage()
+  })
+  render(fragment)
+}
 
 // 새로고침하면 로그인이 풀리는 현상 해결
-if (localStorage.getItem('token')) {
-  login(localStorage.getItem('token'))
+if (localStorage.getItem('token') && localStorage.getItem('username')) {  
+    login(localStorage.getItem('token'), localStorage.getItem('username'))
 } 
 
-if(localStorage.getItem('token')) {
+// if(localStorage.getItem('token')) {
   // localStrage 에 토큰들어가 있으면 무조건 appStartPage() 로 이동해라
-  indexPage()
+indexPage()
   
-} else indexPage();
-
+// } else indexPage()
