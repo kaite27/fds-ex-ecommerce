@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { freemem } from 'os';
-import { ALPN_ENABLED } from 'constants';
+import { ALPN_ENABLED, RSA_NO_PADDING } from 'constants';
+import { createVerify } from 'crypto';
 
 const ecommerceAPI = axios.create({ baseURL: process.env.API_URL })
 
@@ -30,35 +31,58 @@ function render(fragment) {
   rootEl.appendChild(fragment)
 }
 
-function login(token, localUsername) {
+async function login(token, localUsername) {
   localStorage.setItem('token', token)
   localStorage.setItem('username', localUsername)
-
-  // postAPI.defaults : 항상 기본으로 동작
-  ecommerceAPI.defaults.headers['Authorization'] = `Bearer ${token}`;
-  rootEl.classList.add('root--authed')
-}
-
-function logout() {
-  localStorage.removeItem('token')
-  localStorage.removeItem('username')
-  localStorage.removeItem('userId')
-  // 객체의 속성을 지울 때는 delete
-  delete ecommerceAPI.defaults.headers['Authorization']
-  rootEl.classList.remove('root--authed')
-}
-
-async function nav() {
   const res = await ecommerceAPI.get(`/users`)
-  const nav = document.importNode(templates.navigation, true)
-  const usernameBox = nav.querySelector('.username-box')
+  const cartRes = await ecommerceAPI.get(`/carts`)
+  
   // localStorage 에 userID 저장하기 
   for(const {username, id} of res.data) {
     if(localStorage.getItem('username') === username) {
       localStorage.setItem('userId', id)
     }
   }
-  usernameBox.textContent = (`Welcome ${localStorage.getItem('username')} !`)
+  let count = 0
+  for(const {userId} of cartRes.data) {
+    if(localStorage.getItem('userId') === userId.toString()) {
+      count ++
+    }
+    localStorage.setItem('cartItem', count)
+  }
+  // postAPI.defaults : 항상 기본으로 동작
+  ecommerceAPI.defaults.headers['Authorization'] = `Bearer ${token}`;
+  rootEl.classList.add('root--authed')
+
+  // 강제 1회 리프레시 
+  if (self.name != 'reload') {
+    self.name = 'reload';
+    self.location.reload(true);
+  } else self.name = ''; 
+}
+
+function logout() {
+  localStorage.removeItem('token')
+  localStorage.removeItem('username')
+  localStorage.removeItem('userId')
+  localStorage.removeItem('cartItem')
+  // 객체의 속성을 지울 때는 delete
+  delete ecommerceAPI.defaults.headers['Authorization']
+  rootEl.classList.remove('root--authed')
+}
+
+async function nav() {
+  const nav = document.importNode(templates.navigation, true)
+  const usernameBox = nav.querySelector('.username-box')
+  const cartBadge = nav.querySelector('.cart-item__cnt')
+  
+  if(localStorage.getItem('cartItem') !== null) {
+    cartBadge.textContent = `${localStorage.getItem('cartItem')}`
+  }
+
+  if(localStorage.getItem('username') !== null) {
+    usernameBox.textContent = (`Welcome ${localStorage.getItem('username')} !`)
+  } 
 
   // 홈
   nav.querySelector('.nav-link__btn-home').addEventListener("click", e => {
@@ -86,6 +110,12 @@ async function nav() {
     logout()
     indexPage()
   })
+  // 쇼핑 카트
+  nav.querySelector('.btn-shopping-cart').addEventListener("click", e => {
+    rootEl.textContent = ''
+    cartPage()
+  })
+  
   render(nav)
 }
 
@@ -99,7 +129,8 @@ async function indexPage() {
 
   res.data.forEach(product => {
     const fragment = document.importNode(templates.newProductsList, true)
-    const imgEl = fragment.querySelector('.img')
+    const imgEl = fragment.querySelector('.product-page__img--main')
+    const viewDetail = fragment.querySelector('.card-link')
     const itemTitle = fragment.querySelector('.new-products-items__title')
     const unitPrice = fragment.querySelector('.list-group-item__unitPrice')
     const marketPrice = fragment.querySelector('.list-group-item__marketPrice')
@@ -111,6 +142,15 @@ async function indexPage() {
     if(product.id === res.data.length || product.id === res.data.length - 1 || product.id === res.data.length - 2 || product.id === res.data.length - 3) {
       newProFrag.querySelector('.new-products-list').appendChild(fragment)
     }
+
+    imgEl.addEventListener("click", e => {
+      rootEl.textContent = ''
+      productDetailPage(product.id)
+    })
+    viewDetail.addEventListener("click", e => {
+      rootEl.textContent = ''
+      productDetailPage(product.id)
+    })
   })
 
   
@@ -280,7 +320,7 @@ async function productDetailPage(productId) {
     attrUpdate()
   })
   
-  
+  // 카트에 담기 
   
 
   // 탭
@@ -296,52 +336,100 @@ async function productDetailPage(productId) {
   render(fragment)
 }
 
-// 카드 페이지
+
+
+// 카트 페이지
 async function cartPage() {
   nav()
   const res = await ecommerceAPI.get(`/carts`)
-  // const productRes = await ecommerceAPI.get(`/products/${productId}`)
-  // const attRes = await ecommerceAPI.get('/attributes?_expand=product')
+  const attRes = await ecommerceAPI.get('/attributes')  
+  const cartFragment = document.importNode(templates.cartPage, true)
+  const nav1 = document.importNode(templates.navigation, true)
+  // total 변경
+  const cartSubtotal = cartFragment.querySelector('#cart-subtotal')
+  const cartTax = cartFragment.querySelector('#cart-tax')
+  const cartTotal = cartFragment.querySelector('#cart-total')
+  let calcSubTotal = 0
+  const taxRate = 0.06875  
   
   // 카트 페이지
-  const cartFragment = document.importNode(templates.cartPage, true)
-  
-  res.data.forEach(cart => { 
+  for (const {id, userId, productId, attributeId, productTitle, productDesc, size, color, quantity, marketPrice} of res.data) {
     const fragment = document.importNode(templates.cartPageList, true)
     const removeBtn = fragment.querySelector('.remove-product')
     const divEl = fragment.querySelector('.product-cart')
+    const inputEl = fragment.querySelector('.product-quantity')
+    
+    // market 고정
+    const productPrice = fragment.querySelector('.product-price')
+    const productSubtotal = fragment.querySelector('.product-subtot')
+
+    function updateTotal(newSubtotal) {
+      cartSubtotal.textContent = newSubtotal.toFixed(2)
+      cartTax.textContent = (newSubtotal * taxRate).toFixed(2)
+      cartTotal.textContent = (newSubtotal * (taxRate + 1)).toFixed(2)
+    }
     
     // 카트 삭제하기 
     removeBtn.addEventListener("click", async e => {
       console.log("delete pressed")
       divEl.remove();
-      const res = await ecommerceAPI.delete(`/carts/${cart.id}`)
+      const res = await ecommerceAPI.delete(`/carts/${id}`)
     })
 
-    if(cart.userId.toString() === localStorage.getItem('userId')) { 
+    // 수량 변경하기 
+    inputEl.addEventListener("change", async e=> {
+      let changeVal = parseInt(inputEl.value) - parseInt(quantity) 
+      productSubtotal.textContent = (marketPrice * inputEl.value).toFixed(2)
+      e.preventDefault()
+      const payload = {
+        quantity: parseInt(inputEl.value)
+      }
+      const changeRes = await ecommerceAPI.patch(`/carts/${id}`, payload) 
+      
+      calcSubTotal += (changeVal * marketPrice) 
+      updateTotal(calcSubTotal)
+      // refresh 해주면 quantity 업데이트 됨;;
+      rootEl.textContent = '' 
+      cartPage()
+    })  
+
+    if(userId.toString() === localStorage.getItem('userId')) { 
+    const checkoutBtn = cartFragment.querySelector('.checkout') 
+    const checkoutBtn2 = cartFragment.querySelector('.checkout2') 
     const productTitle = fragment.querySelector('.product-title') 
     const productDesc = fragment.querySelector('.product-description') 
     const attributeColor = fragment.querySelector('.attribute-color') 
     const attributeSize = fragment.querySelector('.attribute-size') 
-    const productPrice = fragment.querySelector('.product-price')
-    const productQtt = fragment.querySelector('.product-quantity')
-    const productSubtotal = fragment.querySelector('.product-subtot')
-    const quantity = fragment.querySelector('.product-quantity')
+    const maxQtt = fragment.querySelector('.attribute-max') 
+    // const productQtt = fragment.querySelector('.product-quantity')
+    
+    checkoutBtn.removeAttribute("disabled")
+    checkoutBtn2.removeAttribute("disabled")
+    productTitle.textContent = productTitle
+    productDesc.textContent = productDesc
+    attributeColor.textContent = color
+    attributeSize.textContent = size
+    productPrice.textContent = marketPrice
+    // 카트 내부에서 변경될 수 있는 수량
+    inputEl.value = quantity
+    productSubtotal.textContent = (marketPrice * quantity).toFixed(2) 
 
-    productTitle.textContent = cart.productTitle
-    productDesc.textContent = cart.productDesc
-    attributeColor.textContent = cart.color
-    attributeSize.textContent = cart.size
-    productPrice.textContent = cart.marketPrice
-    productQtt.textContent = cart.quantity
-    productSubtotal.textContent = cart.subtotalPrice  
-    quantity.value = cart.quantity
-        
+    // calculate totals 
+    calcSubTotal += marketPrice * quantity
+    cartSubtotal.textContent = calcSubTotal.toFixed(2)
+    cartTax.textContent = (calcSubTotal * taxRate).toFixed(2)
+    cartTotal.textContent = (calcSubTotal * (taxRate + 1)).toFixed(2)
+    
+    // 어트리뷰트별 최대값 주기
+    for (const {quantity, id} of attRes.data) {
+      if(attributeId === id) {
+        maxQtt.textContent = quantity
+        inputEl.setAttribute("max", `${quantity}`)
+      }
+    }
     cartFragment.querySelector('.cart-page-list').appendChild(fragment) 
     }
-
-  })
-    
+  }
   render(cartFragment)
 }
 

@@ -32,16 +32,16 @@
           <li class="nav-item"><a class="nav-link nav-link__btn-contact" href="#">Contact us</a></li>
         </ul>
         <!-- 삽입 -->
-        <div class="username-box">!!!</div>
+        <div class="username-box">Hi there!</div>
         <!-- 삽입 -->
         <div class="btn-group">
           <button type="button" class="btn btn-success dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">Accounts
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Sign in</a>
-            <a class="dropdown-item" href="#">My Orders</a>
-            <a class="dropdown-item" href="#">Shopping Cart</a>
+            <a class="dropdown-item btn-sign-in" href="#">Sign in</a>
+            <a class="dropdown-item btn-my-order" href="#">My Orders</a>
+            <a class="dropdown-item btn-shopping-cart" href="#">Shopping Cart</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item btn-log-in" href="#">Log in</a>
             <a class="dropdown-item btn-log-out" href="#">Log Out</a>
@@ -49,7 +49,7 @@
         </div>
         <div class="cart-icon">
           <a href="#"><i class="fas fa-shopping-cart cart-icon__i"></i></a>
-          <span class="badge badge-circle cart-item__cnt">3</span>
+          <span class="badge badge-circle cart-item__cnt"></span>
         </div>
       </div>
     </nav>
@@ -384,9 +384,13 @@
       <div class="rows">
         <p class="title is-2">My Shopping Cart List</p>
       </div>
+      <div class="rows clearfix">
+        <button class="button is-success checkout" disabled>Checkout</button>
+      </div>
       <div class="rows">
         <div class="cart-page__item clearfix">
           <div class="column-labels">
+            <label class="product-checkbox">Check</label>
             <label class="product-image">Image</label>
             <label class="product-details">Product</label>
             <label class="product-price">Price</label>
@@ -400,7 +404,7 @@
           <div class="totals">
             <div class="totals-item">
               <label>Subtotal</label>
-              <div class="totals-value" id="cart-subtotal">219.22</div>
+              <div class="totals-value" id="cart-subtotal">0</div>
             </div>
             <div class="totals-item">
               <label>Tax (6.875%)</label>
@@ -411,7 +415,7 @@
               <div class="totals-value" id="cart-total">235.67</div>
             </div>
           </div>
-          <button class="button is-success checkout">Checkout</button>
+          <button class="button is-success checkout checkout2" disabled>Checkout</button>
         </div>
       </div>
     </section>
@@ -419,6 +423,9 @@
 
   <template id="cart-page-list">
     <div class="product-cart">
+      <div class="product-checkbox">
+        <input type="checkbox" class="product-checkbox-btn">
+      </div>
       <div class="product-image">
         <img src="images/slide-1.jpg">
       </div>
@@ -427,17 +434,19 @@
         <div class="product-description"></div>
         <div class="attribute-color"></div>
         <div class="attribute-size"></div>
+        
       </div>
       <div class="product-price"></div>
       <div class="product-quantity-box">
         <input class="product-quantity" type="number" value="1" min="0">
         <button type="submit" class="button is-small update-product">Update</button>
+        <div class="attribute-max">2</div>
       </div>
       <div class="product-subtot"></div>
       <div class="product-removal">
         <button type="submit" class="button is-danger remove-product">Remove</button>
       </div>
-      <div class="divider"></div>
+      <div class="divider-white"></div>
     </div>
   </template>
 
