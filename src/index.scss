@@ -369,11 +369,24 @@ section {
   }
 }
 
+.btn_submit {
+  &--cart, &--checkout {
+    width: 150px;
+    color: #fff;    
+  }
+  &--cart {
+    background-color: $color-green;
+  }
+  &--checkout {
+    margin-left: 5px;
+    background-color: #08f;
+  }
+}
 // 제품 상세 페이지 가격 인디케이터
 .price {
   &-tab {
     display: inline-block;
-    width: 150px;
+    width: 190px;
     &:nth-child(2n) {
       width: 60px;
       background-color: #e9e9e9;
@@ -410,6 +423,12 @@ section {
     box-shadow: 0 0 0;
     padding: 0;
     height: auto;
+    &-remain-box {
+      margin-left: 4px;
+      line-height: 40px;
+      vertical-align: middle;
+      background-color: rgba($color: #c2c2c2, $alpha: 0.2);
+    }
   }
 }
 

@@ -228,8 +228,9 @@ async function productDetailPage(productId) {
   const subTotal = fragment.querySelector('.price-subtotal__value')
   const tax = fragment.querySelector('.price-tax__value')
   const total = fragment.querySelector('.price-total__value')
-
+  let marketPrice = res.data.marketPrice
   // 가격 계산
+  const addCartBtn = fragment.querySelector('.btn_submit--cart')  
   const inputEl = fragment.querySelector('.option-quantity')
   inputEl.addEventListener("change", e => {
     let itemQtt = inputEl.value
@@ -279,6 +280,7 @@ async function productDetailPage(productId) {
 
       if(attribute.quantity === 0) { 
         inputEl.setAttribute("disabled", "disabled")
+        addCartBtn.setAttribute("disabled", "disabled")
         inputEl.value = "0"
       } else 
       inputEl.setAttribute("max", `${attribute.quantity}`)    
@@ -294,8 +296,10 @@ async function productDetailPage(productId) {
           if(quantity == 0) { 
             inputEl.value = "0" 
             inputEl.setAttribute("disabled", "disabled")
+            addCartBtn.classList.add("is-static")
           } else {
           inputEl.removeAttribute("disabled")
+          addCartBtn.classList.remove("is-static")
           inputEl.value = "1"
           inputEl.setAttribute("max", `${quantity}`)    
           }
@@ -305,6 +309,7 @@ async function productDetailPage(productId) {
           AttrRemain.textContent = "no" 
           inputEl.value = "0" 
           inputEl.setAttribute("disabled", "disabled")
+          addCartBtn.classList.add("is-static")
         }
       }
     }
@@ -321,7 +326,23 @@ async function productDetailPage(productId) {
   })
   
   // 카트에 담기 
-  
+  addCartBtn.addEventListener("click", async e => {
+    console.log("pressed?")
+    e.preventDefault()
+    const payload = {
+      productTitle: itemDesc.textContent,
+      productId: productId,
+      userId: parseInt(`${localStorage.getItem('userId')}`),
+      productDesc: itemDesc.textContent,
+      size: parseInt(selectElSize.value),
+      color: selectElColor.value,
+      quantity: parseInt(inputEl.value),
+      marketPrice: marketPrice,
+      subtotalPrice: parseFloat(subTotal.textContent)
+    }
+    const res = await ecommerceAPI.post(`/carts`, payload)
+    console.log("psost?")
+  })
 
   // 탭
   const tabDetail = fragment.querySelector('#detail')
