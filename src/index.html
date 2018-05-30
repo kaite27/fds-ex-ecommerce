@@ -438,7 +438,7 @@
       </div>
       <div class="product-price"></div>
       <div class="product-quantity-box">
-        <input class="product-quantity" type="number" value="1" min="0">
+        <input class="product-quantity" type="number" value="1" min="1" max="10">
         <button type="submit" class="button is-small update-product">Update</button>
         <div class="attribute-max">2</div>
       </div>
@@ -447,6 +447,317 @@
         <button type="submit" class="button is-danger remove-product">Remove</button>
       </div>
       <div class="divider-white"></div>
+    </div>
+  </template>
+
+  <!-- admin page -->
+  <template id="admin-main-page">
+    <section class="admin-main-page">
+      <div class="rows">
+        <h2 class="title is-2 admin-title">Administrator Page</h2>
+      </div>
+      <div class="rows">
+        <div class="columns">
+          <div class="column is-3 admin-menus">
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-action admin-menu admin-link-products"><a href="#">PRODUCTS</a></li>
+              <li class="list-group-item list-group-item-action admin-menu admin-link-add"><a href="#">ADD PRODUCT</a></li>
+              <li class="list-group-item list-group-item-action admin-menu admin-link-orders"><a href="#">ORDERS</a></li>
+              <li class="list-group-item list-group-item-action admin-menu admin-link-sales"><a href="#">SALES</a></li>
+              <li class="list-group-item list-group-item-action admin-menu admin-link-users"><a href="#">USERS</a></li>
+              <li class="list-group-item list-group-item-action admin-menu admin-link-setting"><a href="#">SETTING</a></li>
+              <li class="list-group-item list-group-item-action admin-menu admin-link-blink"></li>
+            </ul>
+          </div>
+          <div class="column is-9">
+            <!-- 삽입 -->
+            <div class="admin-content"></div>
+            <!-- 삽입 -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <!-- product add page -->
+  <template id="add-product-page">
+    <div class="admin-add-product">
+      <p class="title is-3">Add New Product</p>
+      <p class="subtitle is-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
+        book.
+      </p>
+    </div>
+    <div class="form-add-product">
+      <!-- form start -->
+      <form class="form-add-product__send">
+        <div class="row-title">
+          <p class="add-subtitle title is-3">Products Info</p>
+          <div class="field">
+            <label class="label">Product Title</label>
+            <div class="control">
+              <input class="input add-title" type="text" placeholder="Type title of this product" data-toggle="tooltip" title="Not too long but not too short"
+                data-placement="right" required>
+            </div>
+            <label class="label">Product Description</label>
+            <div class="control">
+              <textarea class="textarea add-desc" placeholder="Type description of this product" required data-toggle="tooltip" title="Not too long but not too short as detail as you"
+                data-placement="right"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row-category">
+          <p class="add-subtitle title is-3">Product Category</p>
+          <label class="label">Category</label>
+          <div class="control">
+            <div class="select">
+              <select class="add-category-options">
+                <option class="add-category-option">Dress</option>
+                <option class="add-category-option">Shoes</option>
+                <option class="add-category-option">Coat</option>
+                <option class="add-category-option">Jacket</option>
+                <option class="add-category-option">Bag</option>
+                <option class="add-category-option">Shirt</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row-price">
+          <p class="add-subtitle title is-3">Product Prices</p>
+          <label class="label">Unit Price</label>
+          <div class="add-marketPrice field has-addons">
+            <p class="control">
+              <span class="select">
+                <select>
+                  <option>$</option>
+                  <option>£</option>
+                  <option>€</option>
+                </select>
+              </span>
+            </p>
+            <p class="control">
+              <input class="input add-unit-price" type="text" placeholder="Type market price" data-toggle="tooltip" title="Price that you want to show not sell"
+                data-placement="right" required>
+            </p>
+          </div>
+          <label class="label">Market Price</label>
+          <div class="add-unitPrice field has-addons">
+            <p class="control">
+              <span class="select">
+                <select>
+                  <option>$</option>
+                  <option>£</option>
+                  <option>€</option>
+                </select>
+              </span>
+            </p>
+            <p class="control">
+              <input class="input add-market-price" type="text" placeholder="Type unit price" data-toggle="tooltip" title="Price that you want to sell"
+                data-placement="right" required>
+            </p>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row-images">
+          <p class="add-subtitle title is-3">Product Images</p>
+          <div class="file">
+            <label class="add-image-label label">Main Image</label>
+            <label class="file-label">
+              <input class="file-input" type="file" name="resume">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Choose a file…
+                </span>
+              </span>
+              <span class="add-image-icon">
+                <span class="badge badge-success">Uploaded</span>
+              </span>
+            </label>
+          </div>
+          <div class="file">
+            <label class="add-image-label label">Second Image</label>
+            <label class="file-label">
+              <input class="file-input" type="file" name="resume">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Choose a file…
+                </span>
+              </span>
+              <span class="add-image-icon">
+                <span class="badge badge-success">Uploaded</span>
+              </span>
+            </label>
+          </div>
+          <div class="file">
+            <label class="add-image-label label">Third Image</label>
+            <label class="file-label">
+              <input class="file-input" type="file" name="resume">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Choose a file…
+                </span>
+              </span>
+              <span class="add-image-icon">
+                <span class="badge badge-success">Uploaded</span>
+              </span>
+            </label>
+          </div>
+          <div class="file">
+            <label class="add-image-label label">Forth Image</label>
+            <label class="file-label">
+              <input class="file-input" type="file" name="resume">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Choose a file…
+                </span>
+              </span>
+              <span class="add-image-icon">
+                <span class="badge badge-success">Uploaded</span>
+              </span>
+            </label>
+          </div>
+          <div class="file">
+            <label class="add-image-label label">Product Title</label>
+            <div class="control">
+              <input class="input add-image" type="text" placeholder="https://..." data-toggle="tooltip" title="URL plz.." data-placement="right"
+                required>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row-buttons">
+          <div class="field is-grouped">
+            <div class="control">
+              <button type="button" class="button is-success add-attribute-btn">Add attribute(s)</button>
+            </div>
+            <div class="control">
+              <button type="button" class="button is-light add-reset-btn">Reset all</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- form2 -->
+    <div class="add-variants offScreen">
+      <form class="form-add-product__send">
+        <div class="form-container">
+          <div class="column-labels attr-labels">
+            <label class="attr-sku">SKU #</label>
+            <label class="attr-color">Color</label>
+            <label class="attr-size">Size</label>
+            <label class="attr-unit-price">Unit Price</label>
+            <label class="attr-market-price">Market Price</label>
+            <label class="attr-quantity">Quantity</label>
+          </div>
+          <div class="product product-attr">
+            <div class=" attr-sku">
+              <input type="text" class="input attr-input attr-sku__input" placeholder="SKU number" required data-toggle="tooltip" data-placement="bottom"
+                title="ex) SKU-22a-0211">
+            </div>
+            <div class=" attr-color">
+              <input type="text" class="input attr-input  attr-sku__color" placeholder="One of colours" required data-toggle="tooltip"
+                data-placement="bottom" title="ex) Red, Yellow ..">
+            </div>
+            <div class=" attr-size">
+              <input type="text" class="input attr-input  attr-sku__size" placeholder="One of sizes" required data-toggle="tooltip" data-placement="bottom"
+                title="ex) 90, Small, US-1 ..">
+            </div>
+            <div class=" attr-unit-price">
+              <input type="number" class="input attr-input  attr-sku__unit-price" placeholder="Unit price" required data-toggle="tooltip"
+                data-placement="bottom" title="important! only number available! ex) 90.99">
+            </div>
+            <div class=" attr-market-price">
+              <input type="number" class="input attr-input  attr-sku__market-price" placeholder="Market price" required data-toggle="tooltip"
+                data-placement="bottom" title="important! only number available! ex) 90.99">
+            </div>
+            <div class=" attr-quantity">
+              <input type="number" class="input attr-input  attr-sku__quantity" placeholder="Quantity" required data-toggle="tooltip" data-placement="bottom"
+                title="ex) 100, 30">
+            </div>
+          </div>
+          <div class="row-buttons">
+            <div class="field is-grouped">
+              <div class="control">
+                <button type="button" class="button is-success add-publish-btn">Publish only</button>
+              </div>
+              <div class="control">
+                <button type="button" class="button is-info add-more-btn">Add more variant</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- form2 -->
+    <!-- 삽입! -->
+    <div class="add-more-variants"></div>
+    <!-- 삽입! -->
+  </template>
+
+  <template id="add-more-variants">
+    <div class="add-variants">
+      <form class="form-add-product__send">
+        <div class="form-container">
+          <div class="column-labels attr-labels">
+            <label class="attr-sku">SKU #</label>
+            <label class="attr-color">Color</label>
+            <label class="attr-size">Size</label>
+            <label class="attr-unit-price">Unit Price</label>
+            <label class="attr-market-price">Market Price</label>
+            <label class="attr-quantity">Quantity</label>
+          </div>
+          <div class="product product-attr">
+            <div class=" attr-sku">
+              <input type="text" class="input attr-input attr-sku__input" placeholder="SKU number" required data-toggle="tooltip" data-placement="bottom"
+                title="ex) SKU-22a-0211">
+            </div>
+            <div class=" attr-color">
+              <input type="text" class="input attr-input  attr-sku__color" placeholder="One of colours" required data-toggle="tooltip"
+                data-placement="bottom" title="ex) Red, Yellow ..">
+            </div>
+            <div class=" attr-size">
+              <input type="text" class="input attr-input  attr-sku__size" placeholder="One of sizes" required data-toggle="tooltip" data-placement="bottom"
+                title="ex) 90, Small, US-1 ..">
+            </div>
+            <div class=" attr-unit-price">
+              <input type="number" class="input attr-input  attr-sku__unit-price" placeholder="Unit price" required data-toggle="tooltip"
+                data-placement="bottom" title="important! only number available! ex) 90.99">
+            </div>
+            <div class=" attr-market-price">
+              <input type="number" class="input attr-input  attr-sku__market-price" placeholder="Market price" required data-toggle="tooltip"
+                data-placement="bottom" title="important! only number available! ex) 90.99">
+            </div>
+            <div class=" attr-quantity">
+              <input type="number" class="input attr-input  attr-sku__quantity" placeholder="Quantity" required data-toggle="tooltip" data-placement="bottom"
+                title="ex) 100, 30">
+            </div>
+          </div>
+          <div class="row-buttons">
+            <div class="field is-grouped">
+              <div class="control">
+                <button type="button" class="button is-success add-publish-btn">Publish only</button>
+              </div>
+              <div class="control">
+                <button type="button" class="button is-info add-more-btn">Add more variant</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </template>
 

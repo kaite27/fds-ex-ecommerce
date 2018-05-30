@@ -16,7 +16,8 @@
     "bulma-extensions": "^1.0.31",
     "node-sass": "^4.9.0",
     "parcel-bundler": "^1.8.1",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "tooltip.js": "^1.2.0"
   },
   "devDependencies": {
     "fds-json-server": "0.0.4"

@@ -1,5 +1,8 @@
 $color-blue: dodgerblue;
-$color-green: hsl(141, 71%, 48%);
+$color-green: #28a745;
+$color-red: #dc3545;
+$color-yello: #ffc107;
+$color-grey: #6c757d;
 
 /* ---------- General Modules ----------- */
 .clearfix {
@@ -492,6 +495,10 @@ section {
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 1px solid #999;
+  &-attr { 
+    margin-bottom: 30px;
+    border-bottom: 0; 
+  }
   .product-image {
     text-align: center;
     img {
@@ -587,15 +594,85 @@ section {
 }
 
 
+// admin page setting
+// menus
+.admin {
+  &-title { color: $color-green; }
+  &-menus { margin-top: 2%; }
+  &-menu { 
+    background-color: $color-green; 
+    &:hover {
+      background-color: rgb(127, 197, 111);
+    }
+    a {
+      color: #fff;    
+    }
+  }  
+  &-content {
+    padding: 3% 5%;
+  }
+  &-add-product {
+    // background-color: red;
+    margin-bottom: 30px;
+  }
+  &-link-blink {
+    height: 100vh;
+    &:hover {
+      background-color: $color-green;
+    }
+  }
+}
 
+.subtitle { color: rgb(180, 180, 180); }
 
+.add {
+  &-subtitle { 
+    // background-color: red;
+    display: block;
+    margin-bottom: 15px !important;
+    font-size: 1.7rem !important;
+    color: #555;
+  }
+  &-title, &-image { min-width: 60%; }
+  &-desc {
+    min-width: 50% !important;
+    min-height: 90px !important;
+    max-width: 60% !important;
+  }
+  &-category-options { width: 260px; }
+  &-image-icon { 
+    margin-left: 10px;
+    font-size: 1.2rem;
+    vertical-align: bottom;
+  }
+  &-attribute-btn, &-reset-btn, &-more-btn, &-publish-btn { width: 160px; }
+}
 
+.row-title, .row-category, .row-price, .row-images {
+  margin-bottom: 20px;
+}
 
+.add-image-label { width: 120px;}
 
+.file { margin-top: 5px; }
 
+// attribute form
+.attr-sku { float: left; width: 20%; }
+.attr-color { float: left; width: 16%;  }
+.attr-size { float: left; width: 16%;  }
+.attr-unit-price { float: left; width: 16%;  }
+.attr-market-price { float: left; width: 16%;  }
+.attr-quantity { float: left; width: 16%;  }
 
+.add-variants { margin-top: 50px; }
+.form-container { margin: 5% 0; }
 
-
+.attr-labels {
+  label {
+    font-weight: 600;
+    padding-bottom: 5px;
+  }
+}
 
 
 // loading page

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { freemem } from 'os';
 import { ALPN_ENABLED, RSA_NO_PADDING } from 'constants';
 import { createVerify } from 'crypto';
+import { link } from 'fs';
 
 const ecommerceAPI = axios.create({ baseURL: process.env.API_URL })
 
@@ -23,6 +24,8 @@ const templates = {
   reviewList: document.querySelector('#review-list').content,
   cartPage: document.querySelector('#cart-page').content,
   cartPageList: document.querySelector('#cart-page-list').content,
+  adminMainPage: document.querySelector('#admin-main-page').content,
+  addProductPage: document.querySelector('#add-product-page').content,
 }
 
 // Avoid code duplication
@@ -30,6 +33,7 @@ function render(fragment) {
   // rootEl.textContent = '' 
   rootEl.appendChild(fragment)
 }
+
 
 async function login(token, localUsername) {
   localStorage.setItem('token', token)
@@ -114,6 +118,11 @@ async function nav() {
   nav.querySelector('.btn-shopping-cart').addEventListener("click", e => {
     rootEl.textContent = ''
     cartPage()
+  })
+  // sign in -> admin
+  nav.querySelector('.btn-sign-in').addEventListener("click", e => {
+    rootEl.textContent = ''
+    adminPage()
   })
   
   render(nav)
@@ -278,12 +287,21 @@ async function productDetailPage(productId) {
       AttrRemain.textContent = attribute.quantity
       AttrSKU.textContent = attribute.attrSKU
 
-      if(attribute.quantity === 0) { 
+      console.log(typeof(attribute.quantity))
+      console.log("heelop?")
+
+      if(attribute.quantity >= 1) { 
+        console.log(typeof(attribute.quantity))
+        inputEl.setAttribute("max", `${attribute.quantity}`) 
+        addCartBtn.removeAttribute("disabled")   
+        addCartBtn.classList.remove("is-static")
+      } else {
         inputEl.setAttribute("disabled", "disabled")
-        addCartBtn.setAttribute("disabled", "disabled")
         inputEl.value = "0"
-      } else 
-      inputEl.setAttribute("max", `${attribute.quantity}`)    
+        if(inputEl.value = "0") {
+          addCartBtn.classList.add("is-static")
+        }
+      }   
     }
   })
 
@@ -338,7 +356,8 @@ async function productDetailPage(productId) {
       color: selectElColor.value,
       quantity: parseInt(inputEl.value),
       marketPrice: marketPrice,
-      subtotalPrice: parseFloat(subTotal.textContent)
+      subtotalPrice: parseFloat(subTotal.textContent),
+      attributeId: 1
     }
     const res = await ecommerceAPI.post(`/carts`, payload)
     console.log("psost?")
@@ -422,7 +441,7 @@ async function cartPage() {
     const attributeColor = fragment.querySelector('.attribute-color') 
     const attributeSize = fragment.querySelector('.attribute-size') 
     const maxQtt = fragment.querySelector('.attribute-max') 
-    // const productQtt = fragment.querySelector('.product-quantity')
+    const productQtt = fragment.querySelector('.product-quantity')
     
     checkoutBtn.removeAttribute("disabled")
     checkoutBtn2.removeAttribute("disabled")
@@ -441,11 +460,12 @@ async function cartPage() {
     cartTax.textContent = (calcSubTotal * taxRate).toFixed(2)
     cartTotal.textContent = (calcSubTotal * (taxRate + 1)).toFixed(2)
     
-    // 어트리뷰트별 최대값 주기
+    // 어트리뷰트별 최대값 주기  
     for (const {quantity, id} of attRes.data) {
       if(attributeId === id) {
         maxQtt.textContent = quantity
-        inputEl.setAttribute("max", `${quantity}`)
+        console.log(typeof(quantity))
+        productQtt.setAttribute("max", `${quantity}`)
       }
     }
     cartFragment.querySelector('.cart-page-list').appendChild(fragment) 
@@ -453,6 +473,109 @@ async function cartPage() {
   }
   render(cartFragment)
 }
+
+
+
+
+
+// 어드민 페이지 세팅
+async function adminPage() {
+  nav()
+  const adminFragment = document.importNode(templates.adminMainPage, true)
+  const toAddProduct = adminFragment.querySelector('.admin-content')
+  
+  // add product 페이지 이동
+  const addProductBtn = adminFragment.querySelector('.admin-link-add')
+
+  addProductBtn.addEventListener("click", move => {
+    const fragment = document.importNode(templates.addProductPage, true)
+
+    // tooltip
+    $(function () { $('[data-toggle="tooltip"]').tooltip() })
+
+    // Publish product
+    const publishBtn = fragment.querySelector('.add-attribute-btn') 
+    const resetBtn = fragment.querySelector('.add-reset-btn') 
+    const titleEl = fragment.querySelector('.add-title')
+    const descEl = fragment.querySelector('.add-desc')
+    // selectEl
+    const categoryEl = fragment.querySelector('.add-category-options')
+    const unitPriceEl = fragment.querySelector('.add-unit-price')
+    const marketPriceEl = fragment.querySelector('.add-market-price')
+    const imageEl = fragment.querySelector('.add-image')  
+    // main attribute
+    const variantEl = fragment.querySelector('.add-variants')
+    const attrSKUEl = fragment.querySelector('.attr-sku')
+    const attrColorEl = fragment.querySelector('.attr-color')
+    const attrSizeEl = fragment.querySelector('.attr-size')
+    const attrUnitPriceEl = fragment.querySelector('.attr-unit-price')
+    const attrMKPriceEl = fragment.querySelector('.attr-market-price')
+    const attrQttEl = fragment.querySelector('.attr-quantity')
+    const onlyPublishBtn = fragment.querySelector('.add-publish-btn')
+    const addMoreBtn = fragment.querySelector('.add-more-btn')
+    
+    publishBtn.addEventListener("click", async e => {      
+      const payload = {
+        productTitle: titleEl.value,
+        productDesc: descEl.value,
+        category: categoryEl.value,
+        imageURL: imageEl.value,
+        unitPrice: parseFloat(unitPriceEl.value),
+        marketPrice: parseFloat(marketPriceEl.value),
+        accSoldCnt: 0,
+        userId: 1
+      }
+      const res = await ecommerceAPI.post(`/products`, payload)
+
+      titleEl.setAttribute("disabled", "disabled")
+      descEl.setAttribute("disabled", "disabled")
+      categoryEl.setAttribute("disabled", "disabled")
+      unitPriceEl.setAttribute("disabled", "disabled")
+      marketPriceEl.setAttribute("disabled", "disabled")
+      imageEl.setAttribute("disabled", "disabled")
+      publishBtn.classList.add("is-static")
+      resetBtn.classList.add("is-static")
+      variantEl.classList.remove("offScreen")
+
+      // 가장 최근의 productId 찾기
+      const idRes = await ecommerceAPI.get('/products')
+      let i = 0
+      for (const {id} of idRes.data) { if(id > i) { i = id } }
+      const productId = i
+
+      onlyPublishBtn.addEventListener("click", async e => {
+        const payload2 = {
+          productId: parseInt(productId),
+          attrSKU: attrSKUEl.value,
+          size: parseInt(attrSizeEl.value),
+          color: attrColorEl.value,
+          quantity: parseInt(attrQttEl.value),
+          productUnitPrice: parseFloat(attrUnitPriceEl.value),
+          productMarketPrice: parseFloat(attrMKPriceEl.value),
+          soldOut: "false",
+          defaultAttr: "true"
+        }
+        const attRes = await ecommerceAPI.post(`/attributes`, payload2)
+        console.log("Attribute has posted!")
+        // rootEl.textContent = ''
+        // indexPage()
+      })
+
+    })
+
+
+
+
+
+    toAddProduct.appendChild(fragment)    
+  })
+  
+
+  render(adminFragment)
+}
+
+
+
 
 
 
