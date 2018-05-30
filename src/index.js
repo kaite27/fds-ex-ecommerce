@@ -26,6 +26,7 @@ const templates = {
   cartPageList: document.querySelector('#cart-page-list').content,
   adminMainPage: document.querySelector('#admin-main-page').content,
   addProductPage: document.querySelector('#add-product-page').content,
+  addMoreAttr: document.querySelector('#add-more-variants').content,
 }
 
 // Avoid code duplication
@@ -505,12 +506,12 @@ async function adminPage() {
     const imageEl = fragment.querySelector('.add-image')  
     // main attribute
     const variantEl = fragment.querySelector('.add-variants')
-    const attrSKUEl = fragment.querySelector('.attr-sku')
-    const attrColorEl = fragment.querySelector('.attr-color')
-    const attrSizeEl = fragment.querySelector('.attr-size')
-    const attrUnitPriceEl = fragment.querySelector('.attr-unit-price')
-    const attrMKPriceEl = fragment.querySelector('.attr-market-price')
-    const attrQttEl = fragment.querySelector('.attr-quantity')
+    const attrSKUEl = fragment.querySelector('.attr-sku__input')
+    const attrColorEl = fragment.querySelector('.attr-sku__color')
+    const attrSizeEl = fragment.querySelector('.attr-sku__size')
+    const attrUnitPriceEl = fragment.querySelector('.attr-sku__unit-price')
+    const attrMKPriceEl = fragment.querySelector('.attr-sku__market-price')
+    const attrQttEl = fragment.querySelector('.attr-sku__quantity')
     const onlyPublishBtn = fragment.querySelector('.add-publish-btn')
     const addMoreBtn = fragment.querySelector('.add-more-btn')
     
@@ -543,11 +544,12 @@ async function adminPage() {
       for (const {id} of idRes.data) { if(id > i) { i = id } }
       const productId = i
 
-      onlyPublishBtn.addEventListener("click", async e => {
+      // attribute posting function
+      async function postAttribute() {
         const payload2 = {
           productId: parseInt(productId),
           attrSKU: attrSKUEl.value,
-          size: parseInt(attrSizeEl.value),
+          size: attrSizeEl.value,
           color: attrColorEl.value,
           quantity: parseInt(attrQttEl.value),
           productUnitPrice: parseFloat(attrUnitPriceEl.value),
@@ -557,10 +559,20 @@ async function adminPage() {
         }
         const attRes = await ecommerceAPI.post(`/attributes`, payload2)
         console.log("Attribute has posted!")
-        // rootEl.textContent = ''
-        // indexPage()
+      } 
+
+      onlyPublishBtn.addEventListener("click", async e => {
+        postAttribute()
+        rootEl.textContent = ''
+        indexPage()
       })
 
+      addMoreBtn.addEventListener("click", async e => {
+        postAttribute()
+
+        const moreFragment = document.importNode(templates.addMoreAttr, true)
+        toAddProduct.appendChild(moreFragment) 
+      })
     })
 
 
