@@ -97,7 +97,9 @@ h2:after {
     width: 200px;
     margin: 20px auto;
 }
-
+// body {
+//   position: relative;
+// }
 
 /* ---------- layout control----------- */
 .w-100 {
@@ -124,12 +126,110 @@ section {
       right: 0;
       left: 0;
       bottom: 0;
-      content: "Loading...";
       background-color: rgba(0, 0, 0, 0.5);
-      color: #fff;
     }
   }
 }
+
+.full-box {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 9999px;
+}
+.lds-roller {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.lds-roller div {
+  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  transform-origin: 32px 32px;
+}
+.lds-roller div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $color-blue;
+  margin: -3px 0 0 -3px;
+}
+.lds-roller div:nth-child(1) {
+  animation-delay: -0.036s;
+}
+.lds-roller div:nth-child(1):after {
+  background-color: red;
+  top: 50px;
+  left: 50px;
+}
+.lds-roller div:nth-child(2) {
+  animation-delay: -0.072s;
+}
+.lds-roller div:nth-child(2):after {
+  background-color: yellow;
+  top: 54px;
+  left: 45px;
+}
+.lds-roller div:nth-child(3) {
+  animation-delay: -0.108s;
+}
+.lds-roller div:nth-child(3):after {
+  background-color: $color-green;
+  top: 57px;
+  left: 39px;
+}
+.lds-roller div:nth-child(4) {
+  animation-delay: -0.144s;
+}
+.lds-roller div:nth-child(4):after {
+  background-color: $color-grey;
+  top: 58px;
+  left: 32px;
+}
+.lds-roller div:nth-child(5) {
+  animation-delay: -0.18s;
+}
+.lds-roller div:nth-child(5):after {
+  background-color: rgb(226, 49, 108);
+  top: 57px;
+  left: 25px;
+}
+.lds-roller div:nth-child(6) {
+  animation-delay: -0.216s;
+}
+.lds-roller div:nth-child(6):after {
+  background-color: rgb(245, 172, 37);
+  top: 54px;
+  left: 19px;
+}
+.lds-roller div:nth-child(7) {
+  animation-delay: -0.252s;
+}
+.lds-roller div:nth-child(7):after {
+  background-color: $color-red;
+  top: 50px;
+  left: 14px;
+}
+.lds-roller div:nth-child(8) {
+  animation-delay: -0.288s;
+}
+.lds-roller div:nth-child(8):after {
+  background-color: $color-blue;
+  top: 45px;
+  left: 10px;
+}
+@keyframes lds-roller {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 
 /* ---------- button setting ----------- */
 .btn {
@@ -595,6 +695,20 @@ section {
   display: inline-block;
   margin-right: 15px;
 }
+.modal-sm { top: 80%; }
+.modal-header-2 { 
+  padding: 5px 20px; 
+  background-color: rgb(236, 82, 82);
+  border-bottom: 0;
+  & span { 
+    color: #fff; 
+    vertical-align: top;
+  }
+  & .modal-title {
+    font-size: 1rem;
+    color: #fff;
+  }
+}
 /* --------- 카트 페이지 셋팅 DONT TOUCH ---------- */
 .product-checkbox { float: left; width: 3%; }
 .product-image { float: left; width: 13%; }
@@ -641,8 +755,11 @@ section {
   }
   .product-image {
     text-align: center;
+    height: 120px;
     img {
-      width: 100px;
+      width: 110px;
+      height: 100%;
+      object-fit: cover;
     }
   }  
   .product-details {

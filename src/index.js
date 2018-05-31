@@ -6,6 +6,7 @@ import { link } from 'fs';
 
 const ecommerceAPI = axios.create({ baseURL: process.env.API_URL })
 const rootEl = document.querySelector('.root')
+const mainLoadingEl = document.querySelector('.full-box')
 
 // 자주 쓰는 엘리먼트 빼주기 ex) templates.postList 
 const templates = {   
@@ -38,8 +39,13 @@ function render(fragment) {
 async function login(token, localUsername) {
   localStorage.setItem('token', token)
   localStorage.setItem('username', localUsername)
+
+  rootEl.classList.add('root--loading')
+  mainLoadingEl.classList.remove('offScreen')
   const res = await ecommerceAPI.get(`/users`)
   const cartRes = await ecommerceAPI.get(`/carts`)
+  rootEl.classList.remove('root--loading')
+  mainLoadingEl.classList.add('offScreen')
   
   // localStorage 에 userID 저장하기 
   for(const {username, id} of res.data) {
@@ -79,7 +85,10 @@ async function nav() {
   const nav = document.importNode(templates.navigation, true)
   const usernameBox = nav.querySelector('.username-box')
   const cartBadge = nav.querySelector('.cart-item__cnt')
-  
+  const toAdmin = nav.querySelector('.btn-to-admin')
+  const toSignin = nav.querySelector('.btn-sign-in')
+  const toShoppingCart = nav.querySelector('.btn-shopping-cart')
+  const toSalesReport = nav.querySelector('.btn-sales-report')
   if(localStorage.getItem('cartItem') !== null) {
     cartBadge.textContent = `${localStorage.getItem('cartItem')}`
   }
@@ -87,6 +96,12 @@ async function nav() {
   if(localStorage.getItem('username') !== null) {
     usernameBox.textContent = (`Welcome ${localStorage.getItem('username')} !`)
   } 
+  if(localStorage.getItem('userId') === '1' ){
+    toAdmin.classList.remove("offScreen")
+    toSignin.classList.add("offScreen")
+    toSalesReport.classList.remove("offScreen")
+    toShoppingCart.classList.add("offScreen")
+  }
 
   // 홈
   nav.querySelector('.nav-link__btn-home').addEventListener("click", e => {
@@ -115,12 +130,12 @@ async function nav() {
     indexPage()
   })
   // 쇼핑 카트
-  nav.querySelector('.btn-shopping-cart').addEventListener("click", e => {
+  toShoppingCart.addEventListener("click", e => {
     rootEl.textContent = ''
     cartPage()
   })
   // sign in -> admin
-  nav.querySelector('.btn-sign-in').addEventListener("click", e => {
+  toAdmin.addEventListener("click", e => {
     rootEl.textContent = ''
     adminPage()
   })
@@ -130,11 +145,16 @@ async function nav() {
 // 이커머스 메인 웹사이트 페이지 
 async function indexPage() {
   nav()
-  const res = await ecommerceAPI.get('/products')
   const mainHeader = document.importNode(templates.mainHeader, true)
   const newProFrag = document.importNode(templates.newProducts, true)
   const subscribe = document.importNode(templates.subscribes, true)
   const contactPage = document.importNode(templates.contactPage, true)
+  
+  rootEl.classList.add('root--loading')
+  mainLoadingEl.classList.remove('offScreen')
+  const res = await ecommerceAPI.get('/products')
+  rootEl.classList.remove('root--loading')
+  mainLoadingEl.classList.add('offScreen')
 
   res.data.forEach(product => {
     const fragment = document.importNode(templates.newProductsList, true)
@@ -180,9 +200,15 @@ function avoid(arr) {
 // 프로덕트 전체 리스트 페이지
 async function productPage() {
   nav()
+  const productPage = document.importNode(templates.productPage, true)
+  const loadingEl = productPage.querySelector('.full-box')
+
+  rootEl.classList.add('root--loading')
+  loadingEl.classList.remove('offScreen')
   const attRes = await ecommerceAPI.get('/attributes?_expand=product')
   const res = await ecommerceAPI.get('/products')
-  const productPage = document.importNode(templates.productPage, true)
+  rootEl.classList.remove('root--loading')
+  loadingEl.classList.add('offScreen')
 
   res.data.forEach(product => {
     const fragment = document.importNode(templates.productPageList, true)
@@ -229,16 +255,25 @@ async function productPage() {
 // 프로덕트 상세 페이지 
 async function productDetailPage(productId) {
   nav()
+  const fragment = document.importNode(templates.productDetail, true)
+  const loadingEl = fragment.querySelector('.full-box')
+  rootEl.classList.add('root--loading')
+  loadingEl.classList.remove('offScreen')
   const res = await ecommerceAPI.get(`/products/${productId}`)
-  const attRes = await ecommerceAPI.get('/attributes?_expand=product')
+  const attRes = await ecommerceAPI.get('/attributes')
+  rootEl.classList.remove('root--loading')
+  loadingEl.classList.add('offScreen')
 
   const productImg = res.data.imageURL
-  console.log(productImg)
-  console.log(typeof(productImg))
   const productTitle = res.data.productTitle
   const productDesc = res.data.productDesc
+  const productImage = res.data.imageURL
 
-  const fragment = document.importNode(templates.productDetail, true)
+  //breadcrumbs
+  const breadHomeEl = fragment.querySelector('.breadcrumb-home')
+  const breadProductEl = fragment.querySelector('.breadcrumb-product')
+  const breadCategoryEl = fragment.querySelector('.breadcrumb-cat')
+  const breadSKUEl = fragment.querySelector('.breadcrumb-sku-a')
   // product
   const imgEl = fragment.querySelector('.product-page__img--main-big')  
   const imgEl1 = fragment.querySelector('.img-list-1')  
@@ -256,7 +291,20 @@ async function productDetailPage(productId) {
   // 가격 계산
   const addCartBtn = fragment.querySelector('.btn_submit--cart')  
   const inputEl = fragment.querySelector('.option-quantity')
-
+  // breadcrumb 이동
+  breadCategoryEl.textContent = res.data.category
+  breadHomeEl.addEventListener('click', e => {
+    rootEl.textContent = '' 
+    indexPage()  
+  })
+  breadProductEl.addEventListener('click', e => {
+    rootEl.textContent = ''
+    productPage()
+  })
+  breadCategoryEl.addEventListener('click', e => {
+    rootEl.textContent = ''
+    productPage()
+  })
   inputEl.addEventListener("change", e => {
     let itemQtt = inputEl.value
     const taxRate = 0.06875
@@ -302,6 +350,7 @@ async function productDetailPage(productId) {
       currentSize = attribute.size.toString()
       AttrRemain.textContent = attribute.quantity
       AttrSKU.textContent = attribute.attrSKU
+      breadSKUEl.textContent = attribute.attrSKU
 
       if(attribute.quantity >= 1) { 
         inputEl.setAttribute("max", `${attribute.quantity}`) 
@@ -372,26 +421,37 @@ async function productDetailPage(productId) {
 
   // 카트에 담기 
   async function addToCart() {
-    const payload = {
-      productTitle: productTitle,
-      productId: productId,
-      userId: parseInt(`${localStorage.getItem('userId')}`),
-      productDesc: productDesc,
-      size: parseInt(selectElSize.value),
-      color: selectElColor.value,
-      quantity: parseInt(inputEl.value),
-      marketPrice: marketPrice,
-      subtotalPrice: parseFloat(subTotal.textContent),
-      attributeId: 1
-    }
-    modalTitle.textContent = itemTitle.textContent
-    modalPrice.textContent = parseFloat(subTotal.textContent)
-    modalColor.textContent = selectElColor.value
-    modalSize.textContent = parseInt(selectElSize.value)
-    modalQtt.textContent = parseInt(inputEl.value)
-    modalImg.setAttribute("src", `${productImg}`)
-    const res = await ecommerceAPI.post(`/carts`, payload)
+    attRes.data.forEach(async attr => {
+      if (attr.productId === productId) {
+        if (selectElColor.value === attr.color && (selectElSize.value).toString() === attr.size.toString()) {
+
+          const payload = {
+            productTitle: productTitle,
+            productId: productId,
+            userId: parseInt(`${localStorage.getItem('userId')}`),
+            productDesc: productDesc,
+            size: parseInt(selectElSize.value),
+            color: selectElColor.value,
+            quantity: parseInt(inputEl.value),
+            marketPrice: marketPrice,
+            subtotalPrice: parseFloat(subTotal.textContent),
+            attributeId: attr.id,
+            imageURL: productImage
+          }
+          modalTitle.textContent = itemTitle.textContent
+          modalPrice.textContent = parseFloat(subTotal.textContent)
+          modalColor.textContent = selectElColor.value
+          modalSize.textContent = parseInt(selectElSize.value)
+          modalQtt.textContent = parseInt(inputEl.value)
+          modalImg.setAttribute("src", `${productImg}`)
+
+          // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!button
+          const res = await ecommerceAPI.post(`/carts`, payload)
+        }
+      }
+    })
   }
+
   addCartBtn.addEventListener("click", async e => {
     e.preventDefault()
     addToCart()
@@ -414,10 +474,17 @@ async function productDetailPage(productId) {
 // 카트 페이지 매소드
 async function cartPage() {
   nav()
+  const cartFragment = document.importNode(templates.cartPage, true)
+  const nav1 = document.importNode(templates.navigation, true) 
+  const loadingEl = cartFragment.querySelector('.full-box')
+
+  rootEl.classList.add('root--loading')
+  loadingEl.classList.remove('offScreen')
   const res = await ecommerceAPI.get('/carts')
   const attRes = await ecommerceAPI.get('/attributes')  
-  const cartFragment = document.importNode(templates.cartPage, true)
-  const nav1 = document.importNode(templates.navigation, true)
+  rootEl.classList.remove('root--loading')
+  loadingEl.classList.add('offScreen')
+  
   // total 변경
   const cartSubtotal = cartFragment.querySelector('#cart-subtotal')
   const cartTax = cartFragment.querySelector('#cart-tax')
@@ -426,7 +493,9 @@ async function cartPage() {
   const taxRate = 0.06875  
   
   // 카트 페이지 어트리뷰트 정보 불러오기
-  for (const {id, userId, attributeId, size, color, quantity, marketPrice, productTitle, productDesc} of res.data) {
+  for (const {id, userId, attributeId, size, color, quantity, marketPrice, productTitle, productDesc, imageURL} of res.data) {
+    
+    
     const fragment = document.importNode(templates.cartPageList, true)
     const removeBtn = fragment.querySelector('.remove-product')
     const divEl = fragment.querySelector('.product-cart')
@@ -447,13 +516,15 @@ async function cartPage() {
     const checkoutBtn2 = cartFragment.querySelector('.checkout2') 
     const productTitleEl = fragment.querySelector('.product-title') 
     const productDescEl = fragment.querySelector('.product-description') 
+    const productImgEl = fragment.querySelector('.product-cart-image') 
     const attributeColor = fragment.querySelector('.attribute-color') 
     const attributeSize = fragment.querySelector('.attribute-size') 
     const maxQtt = fragment.querySelector('.attribute-max') 
     const productQtt = fragment.querySelector('.product-quantity')
-    
+    console.log(`attributeId: ${attributeId}`)
     checkoutBtn.classList.remove("is-static")
     checkoutBtn2.classList.remove("is-static")
+    productImgEl.setAttribute('src', `${imageURL}`)
     productTitleEl.textContent = productTitle
     productDescEl.textContent = productDesc
     attributeColor.textContent = color
@@ -470,12 +541,13 @@ async function cartPage() {
     cartTotal.textContent = (calcSubTotal * (taxRate + 1)).toFixed(2)
     
     // 어트리뷰트별 최대값 주기  
-    for (const {quantity, id} of attRes.data) {
-      if(attributeId === id) {
-        maxQtt.textContent = quantity
-        productQtt.setAttribute("max", `${quantity}`)
+    attRes.data.forEach(attr => {
+      if(attributeId === attr.id) {
+        maxQtt.textContent = attr.quantity
+        productQtt.setAttribute("max", `${attr.quantity}`)
       }
-    }
+    })
+
     cartFragment.querySelector('.cart-page-list').appendChild(fragment) 
     }
 
@@ -483,7 +555,9 @@ async function cartPage() {
     removeBtn.addEventListener("click", async e => {
       console.log("delete pressed")
       divEl.remove();
+      loadingEl.classList.remove('offScreen')
       const res = await ecommerceAPI.delete(`/carts/${id}`)
+      loadingEl.classList.add('offScreen')
     })
 
     // 수량 변경하기 
@@ -494,7 +568,9 @@ async function cartPage() {
       const payload = {
         quantity: parseInt(inputEl.value)
       }
+      loadingEl.classList.remove('offScreen')
       const changeRes = await ecommerceAPI.patch(`/carts/${id}`, payload)
+      loadingEl.classList.add('offScreen')
 
       calcSubTotal += (changeVal * marketPrice) 
       updateTotal(calcSubTotal)
@@ -510,6 +586,7 @@ async function cartPage() {
 async function adminPage() {
   nav()
   const adminFragment = document.importNode(templates.adminMainPage, true)
+  const loadingEl = adminFragment.querySelector('.full-box')
   const toAddProduct = adminFragment.querySelector('.admin-content')
   // add product 페이지 이동
   const addProductBtn = adminFragment.querySelector('.admin-link-add')
@@ -551,6 +628,7 @@ async function adminPage() {
         accSoldCnt: 0,
         userId: 1
       }
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!! botton !!!!!!!!!!!!
       const res = await ecommerceAPI.post(`/products`, payload)
 
       titleEl.setAttribute("disabled", "disabled")
@@ -564,30 +642,38 @@ async function adminPage() {
       variantEl.classList.remove("offScreen")
 
       // 가장 최근의 productId 찾기
+      rootEl.classList.add('root--loading')
+      loadingEl.classList.remove('offScreen')
       const idRes = await ecommerceAPI.get('/products')
+      rootEl.classList.remove('root--loading')
+      loadingEl.classList.add('offScreen')
+      
       let i = 0
       for (const {id} of idRes.data) { if(id > i) { i = id } }
       const productId = i
 
+
+
       // attribute posting function
-      async function postAttribute() {
+      async function postAttribute(PID, SKU, SIZE, COL, QTT, UP, MP) {
         let payload2 = {
-          productId: parseInt(productId),
-          attrSKU: attrSKUEl.value,
-          size: attrSizeEl.value,
-          color: attrColorEl.value,
-          quantity: parseInt(attrQttEl.value),
-          productUnitPrice: parseFloat(attrUnitPriceEl.value),
-          productMarketPrice: parseFloat(attrMKPriceEl.value),
+          productId: parseInt(PID),
+          attrSKU: SKU.value,
+          size: parseInt(SIZE.value),
+          color: COL.value,
+          quantity: parseInt(QTT.value),
+          productUnitPrice: parseFloat(UP.value),
+          productMarketPrice: parseFloat(MP.value),
           soldOut: "false",
           defaultAttr: "true"
         }
+        // !!!!!!!!!!!!!!!!!!!!!!!!!! botton
         const attRes = await ecommerceAPI.post(`/attributes`, payload2)
         console.log("Attribute has posted!")
       } 
 
       onlyPublishBtn.addEventListener("click", async e => {
-        postAttribute()
+        postAttribute(productId, attrSKUEl, attrSizeEl, attrColorEl, attrQttEl, attrUnitPriceEl, attrMKPriceEl)
         rootEl.textContent = ''
         indexPage()
       })
@@ -596,26 +682,38 @@ async function adminPage() {
         const moreFragment = document.importNode(templates.addMoreAttr, true) 
         const publishButton = moreFragment.querySelector('.add-publish-btn')
         const addMoreButton = moreFragment.querySelector('.add-more-btn')
+        
+        // 변수 재선언
+        const moreSKUEl = moreFragment.querySelector('.attr-sku__input')
+        const moreColorEl = moreFragment.querySelector('.attr-sku__color')
+        const moreSizeEl = moreFragment.querySelector('.attr-sku__size')
+        const moreUnitPriceEl = moreFragment.querySelector('.attr-sku__unit-price')
+        const moreMKPriceEl = moreFragment.querySelector('.attr-sku__market-price')
+        const moreQttEl = moreFragment.querySelector('.attr-sku__quantity')
+
         publishButton.addEventListener("click", async e => {
-          postAttribute()
+          postAttribute(productId, moreSKUEl, moreSizeEl, moreColorEl, moreQttEl, moreUnitPriceEl, moreMKPriceEl)
           rootEl.textContent = ''
           indexPage()
         })
         toAddProduct.appendChild(moreFragment) 
       }
+
       addMoreBtn.addEventListener("click", async e => {
-        postAttribute()
+        postAttribute(productId, attrSKUEl, attrSizeEl, attrColorEl, attrQttEl, attrUnitPriceEl, attrMKPriceEl)
+
         attrSKUEl.setAttribute("disabled", "disabled")
         attrSizeEl.setAttribute("disabled", "disabled")
         attrColorEl.setAttribute("disabled", "disabled")
         attrQttEl.setAttribute("disabled", "disabled")
-        marketPriceEl.setAttribute("disabled", "disabled")
         attrUnitPriceEl.setAttribute("disabled", "disabled")
         attrMKPriceEl.setAttribute("disabled", "disabled")
         onlyPublishBtn.classList.add("is-static")
         addMoreBtn.classList.add("is-static")
+        
         pustMoreVariant()
       })
+
     })
     toAddProduct.appendChild(fragment)    
   })
@@ -626,6 +724,7 @@ async function adminPage() {
 async function loginPage() {
   const fragment = document.importNode(templates.login, true)
   const formEl = fragment.querySelector('.login__form')
+  const loadingEl = fragment.querySelector('.full-box') 
   formEl.addEventListener("submit", async e => {
     const localUsername = e.target.elements.username.value
     const payload = {
@@ -634,23 +733,22 @@ async function loginPage() {
     }
     e.preventDefault()
     rootEl.classList.add('root--loading')
+    loadingEl.classList.remove('offScreen')
     const res = await ecommerceAPI.post('/users/login', payload)
     rootEl.classList.remove('root--loading')
+    loadingEl.classList.add('offScreen')
 
     login(res.data.token, localUsername)
-    rootEl.textContent = '' 
-    indexPage()
   })
   render(fragment)
 }
 
 // 새로고침하면 로그인이 풀리는 현상 해결
-if (localStorage.getItem('token') && localStorage.getItem('username')) {  
+if (localStorage.getItem('token') && localStorage.getItem('username')) { 
     login(localStorage.getItem('token'), localStorage.getItem('username'))
 } 
 
-// if(localStorage.getItem('token')) {
-  // localStrage 에 토큰들어가 있으면 무조건 appStartPage() 로 이동해라
-indexPage()
-  
-// } else indexPage()
+// initial login 
+if(localStorage.getItem('userId') === '1') {
+  adminPage() 
+} else indexPage()
