@@ -5,7 +5,6 @@ import { createVerify } from 'crypto';
 import { link } from 'fs';
 
 const ecommerceAPI = axios.create({ baseURL: process.env.API_URL })
-
 const rootEl = document.querySelector('.root')
 
 // 자주 쓰는 엘리먼트 빼주기 ex) templates.postList 
@@ -34,7 +33,6 @@ function render(fragment) {
   // rootEl.textContent = '' 
   rootEl.appendChild(fragment)
 }
-
 
 async function login(token, localUsername) {
   localStorage.setItem('token', token)
@@ -125,7 +123,6 @@ async function nav() {
     rootEl.textContent = ''
     adminPage()
   })
-  
   render(nav)
 }
 
@@ -162,7 +159,6 @@ async function indexPage() {
       productDetailPage(product.id)
     })
   })
-
   
   render(mainHeader)
   render(newProFrag)
@@ -181,7 +177,6 @@ async function productPage() {
   nav()
   const attRes = await ecommerceAPI.get('/attributes?_expand=product')
   const res = await ecommerceAPI.get('/products')
-
   const productPage = document.importNode(templates.productPage, true)
 
   res.data.forEach(product => {
@@ -288,9 +283,6 @@ async function productDetailPage(productId) {
       AttrRemain.textContent = attribute.quantity
       AttrSKU.textContent = attribute.attrSKU
 
-      console.log(typeof(attribute.quantity))
-      console.log("heelop?")
-
       if(attribute.quantity >= 1) { 
         console.log(typeof(attribute.quantity))
         inputEl.setAttribute("max", `${attribute.quantity}`) 
@@ -364,22 +356,22 @@ async function productDetailPage(productId) {
     console.log("psost?")
   })
 
-  // 탭
-  const tabDetail = fragment.querySelector('#detail')
-  const tabReview = fragment.querySelector('#review')
-
   itemTitle.textContent = res.data.productTitle
   itemDesc.textContent = res.data.productDesc
   subTotal.textContent = res.data.marketPrice.toFixed(2)
   tax.textContent = ((res.data.marketPrice) * 0.06875).toFixed(2)
   total.textContent = (res.data.marketPrice * ( 0.06875 + 1 )).toFixed(2)
 
+  // 탭
+  const tabDetail = fragment.querySelector('#detail')
+  const tabReview = fragment.querySelector('#review')
+
   render(fragment)
 }
 
 
 
-// 카트 페이지
+// 카트 페이지 매소드
 async function cartPage() {
   nav()
   const res = await ecommerceAPI.get(`/carts`)
@@ -393,7 +385,7 @@ async function cartPage() {
   let calcSubTotal = 0
   const taxRate = 0.06875  
   
-  // 카트 페이지
+  // 카트 페이지 어트리뷰트 정보 불러오기
   for (const {id, userId, productId, attributeId, productTitle, productDesc, size, color, quantity, marketPrice} of res.data) {
     const fragment = document.importNode(templates.cartPageList, true)
     const removeBtn = fragment.querySelector('.remove-product')
@@ -476,18 +468,13 @@ async function cartPage() {
 }
 
 
-
-
-
 // 어드민 페이지 세팅
 async function adminPage() {
   nav()
   const adminFragment = document.importNode(templates.adminMainPage, true)
   const toAddProduct = adminFragment.querySelector('.admin-content')
-  
   // add product 페이지 이동
   const addProductBtn = adminFragment.querySelector('.admin-link-add')
-
   addProductBtn.addEventListener("click", move => {
     const fragment = document.importNode(templates.addProductPage, true)
 
@@ -546,7 +533,7 @@ async function adminPage() {
 
       // attribute posting function
       async function postAttribute() {
-        const payload2 = {
+        let payload2 = {
           productId: parseInt(productId),
           attrSKU: attrSKUEl.value,
           size: attrSizeEl.value,
@@ -560,35 +547,42 @@ async function adminPage() {
         const attRes = await ecommerceAPI.post(`/attributes`, payload2)
         console.log("Attribute has posted!")
       } 
-
+      
       onlyPublishBtn.addEventListener("click", async e => {
         postAttribute()
         rootEl.textContent = ''
         indexPage()
       })
 
+      function pustMoreVariant() {
+        const moreFragment = document.importNode(templates.addMoreAttr, true) 
+        const publishButton = moreFragment.querySelector('.add-publish-btn')
+        const addMoreButton = moreFragment.querySelector('.add-more-btn')
+        publishButton.addEventListener("click", async e => {
+          postAttribute()
+          rootEl.textContent = ''
+          indexPage()
+        })
+        toAddProduct.appendChild(moreFragment) 
+      }
       addMoreBtn.addEventListener("click", async e => {
         postAttribute()
-
-        const moreFragment = document.importNode(templates.addMoreAttr, true)
-        toAddProduct.appendChild(moreFragment) 
+        attrSKUEl.setAttribute("disabled", "disabled")
+        attrSizeEl.setAttribute("disabled", "disabled")
+        attrColorEl.setAttribute("disabled", "disabled")
+        attrQttEl.setAttribute("disabled", "disabled")
+        marketPriceEl.setAttribute("disabled", "disabled")
+        attrUnitPriceEl.setAttribute("disabled", "disabled")
+        attrMKPriceEl.setAttribute("disabled", "disabled")
+        onlyPublishBtn.classList.add("is-static")
+        addMoreBtn.classList.add("is-static")
+        pustMoreVariant()
       })
     })
-
-
-
-
-
     toAddProduct.appendChild(fragment)    
   })
-  
-
   render(adminFragment)
 }
-
-
-
-
 
 
 // 로그인 페이지 실행
