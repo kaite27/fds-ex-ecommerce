@@ -65,13 +65,13 @@
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img class="d-block w-100" src="images/slide-2.jpg?auto=yes" alt="First slide">
+          <img class="d-block w-100" src="https://image.freepik.com/free-photo/girl-sitting-on-a-bench_1303-3492.jpg?auto=yes" alt="First slide">
         </div>
         <div class="carousel-item">
-          <img class="d-block w-100" src="images/slide-2.jpg?auto=yes" alt="Second slide">
+          <img class="d-block w-100" src="https://image.freepik.com/free-photo/girl-in-sunglasses_1157-6313.jpg?auto=yes" alt="Second slide">
         </div>
         <div class="carousel-item">
-          <img class="d-block w-100" src="images/slide-3.jpg?auto=yes" alt="Third slide">
+          <img class="d-block w-100" src="https://image.freepik.com/free-photo/girl-in-sunglasses_1157-6298.jpg?auto=yes" alt="Third slide">
         </div>
       </div>
       <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -85,7 +85,7 @@
     </div>
     <div class="events events-one">
       <div class="events-item">
-        <img src="images/slide-2.jpg" alt="event1">
+        <img src="https://image.freepik.com/free-photo/woman-sitting-on-wooden-stairs_23-2147825398.jpg" alt="event1">
       </div>
       <div class="events-btn">
         <a href="#" role="button" class="event-btn btn-secondary btn">View More</a>
@@ -93,7 +93,7 @@
     </div>
     <div class="events events-two">
       <div class="events-item">
-        <img src="images/slide-2.jpg" alt="event1">
+        <img src="https://image.freepik.com/free-photo/fashionable-girl-posing-on-rooftop_23-2147824332.jpg" alt="event1">
       </div>
       <div class="events-btn">
         <a href="#" role="button" class="event-btn btn-success btn">View More</a>
@@ -101,7 +101,7 @@
     </div>
     <div class="events events-three">
       <div class="events-item">
-        <img src="images/slide-2.jpg" alt="event1">
+        <img src="https://image.freepik.com/free-photo/woman-holding-paper-bags_23-2147669704.jpg" alt="event1">
       </div>
       <div class="events-btn">
         <a href="#" role="button" class="event-btn btn-success btn">View More</a>
@@ -109,7 +109,7 @@
     </div>
     <div class="events events-four">
       <div class="events-item">
-        <img src="images/slide-2.jpg" alt="event1">
+        <img src="https://image.freepik.com/free-photo/woman-walking-with-shopping-bags-on-shopping-mall-background_34200-139.jpg" alt="event1">
       </div>
       <div class="events-btn">
         <a href="#" role="button" class="event-btn btn-secondary btn">View More</a>
@@ -135,15 +135,17 @@
   <!-- product page item list template  * 4 -->
   <template id="new-products-list">
     <div class="new-products-items card">
+      <div class="new-products-img">
       <img class="product-page__img--main" src="images/slide-1.jpg" alt="New Item 01">
+      </div>
       <div class="new-products-items__card">
         <span class="new-products-items__title"></span>
         <span class="new-products-badge badge badge-success">New</span>
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
-          $<span class="list-group-item__unitPrice"></span>
-          <strong>$<span class="list-group-item__marketPrice"></span></strong>
+          <span class="list-group-item__unitPrice"></span>
+          <strong><span class="list-group-item__marketPrice"></span></strong>
         </li>
       </ul>
       <div class="new-products-items__card">
@@ -157,7 +159,7 @@
   <section class="subscribes">
     <div class="rows">
       <h2>Subscribe Our Weekly News</h2>
-      <p>Subscribe to our newsletter!</p>
+      <p>Subscribe to our newsletter! Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
     </div>
     <div class="rows">
       <div class="subscribes-form field">
@@ -174,6 +176,36 @@
     </div>
     </div>
   </section>
+  </template>
+
+  <!-- footer / contact -->
+  <template id="contact-us">
+  <footer>
+      <div class="rows">
+          <div class="span-1-of-2 col">
+              <ul class="footer-nav">
+                  <li><a href="#">About us</a></li>
+                  <li><a href="#">Blog</a></li>
+                  <li><a href="#">Press</a></li>
+                  <li><a href="#">IOS App</a></li>
+                  <li><a href="#">Android App</a></li>
+              </ul>
+          </div>
+          <div class="col span-1-of-2">
+              <ul class="social-links">
+                  <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                  <li><a href="#"><i class="fab fa-facebook-square"></i></a></li>
+                  <li><a href="#"><i class="fab fa-google-plus-square"></i></a></li>
+                  <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+              </ul>
+          </div>
+      </div>
+      <div class="rows">
+          <p>
+            copyright &copy; 2018 by Beigenut. All rights reserved.
+          </p>
+      </div>
+  </footer>
   </template>
 
   <!-- 제품 리스트 페이지 -->
@@ -212,7 +244,7 @@
     <div class="column is-one-third product-page__li">
       <div class="product-page__box card"><a class="link-to-product-detail" href="#"></a>
         <div class="img-box">
-          <img clas="product-page__img--main" src="images/slide-1.jpg" alt="New Item 01">
+          <img class="product-page__img--main" src="images/slide-1.jpg" alt="New Item 01">
           <a href="#" class="img-box__btn card-link btn btn-success"><i class="icon-wish far fa-heart"></i> Wish</a>
           <!-- far -> fas 풀컬러 -->
         </div>
@@ -222,8 +254,8 @@
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
-            $<span class="list-group-item__unitPrice"></span>
-            <strong>$<span class="list-group-item__marketPrice"></span></strong>
+            <span class="list-group-item__unitPrice"></span>
+            <strong><span class="list-group-item__marketPrice"></span></strong>
           </li>
           <li class="list-group-item">
           <p>Options :</p>
@@ -251,12 +283,12 @@
       <div class="rows">
         <div class="columns">
           <div class="column is-one-third">
-            <div class="img-box">
-              <img class="product-page__img--main" src="images/slide-1.jpg" alt="Detail">
+            <div class="img-box-big">
+              <img class="product-page__img--main-big" src="images/slide-1.jpg" alt="Detail">
               <div class="img-container">
-                <img class="img-container__list" src="images/slide-1.jpg" alt="Detail">
-                <img class="img-container__list" src="images/slide-1.jpg" alt="Detail">
-                <img class="img-container__list" src="images/slide-1.jpg" alt="Detail">
+                <img class="img-container__list img-list-1" src="images/slide-1.jpg" alt="Detail">
+                <img class="img-container__list img-list-2" src="images/slide-1.jpg" alt="Detail">
+                <img class="img-container__list img-list-3" src="images/slide-1.jpg" alt="Detail">
               </div>
             </div>
           </div>
@@ -291,7 +323,7 @@
                 <div class="control">
                   <span class="list-group-item__variants">Quantity :</span>
                   <div class="input is-success">
-                    <input type="number" name="quantity" class="input option-quantity" min="1" value="1">
+                    <input type="number" name="quantity" class="input option-quantity" min="1" value="1" data-toggle="tooltip" title="No more!">
                   </div>
                   <span class="option-quantity-remain-box"> <span class="option-quantity-remain">10</span> item(s) left</span>
                 </div>
@@ -312,7 +344,47 @@
                 </div>
               </div>
               <div class="divider"></div>
-              <button class="button btn_submit--cart">Add cart</button>
+              <button class="button btn_submit--cart" data-toggle="modal" data-target="#exampleModal">Add cart</button>
+              <!--  -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <!--  -->
+                      <div class="modal-content">
+                        <div class="columns">
+                          <div class="column is-4">
+                            <div class="modal-image-box">
+                              <img src="images/slide-1.jpg" class="modal-img">
+                            </div>
+                          </div>
+                          <div class="column is-7 modal-info-box">
+                            <div class="modal-info">
+                              <p class="modal-title-item">PRODUCT TITLE PRODUCT TITLE PRODUCT TITLE PRODUCT TITLE</p>
+                              <p class="modal-price">20.99</p>
+                              <p class="modal-color">Red</p>
+                              <p class="modal-size">90</p>
+                              <p class="modal-quantity">10</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!--  -->
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary modal-cart">View Cart</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--  -->
               <button class="button btn_submit--checkout" >Checkout</button>
               </form>
             </div>
@@ -332,7 +404,13 @@
               </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">...</div>
+              <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
+                <!-- temporary! -->
+                <div class="product-detail-img">
+                  <img src="http://image.ticketmonster.co.kr/deals/2018/05/30/1145577766/1145577766_product_main_0a2e0_1527660426production.jpg">
+                </div>
+                <!-- temporary! -->
+              </div>
               <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                 <!-- 삽입 -->
                 <div class="review-list"></div>
@@ -385,7 +463,7 @@
         <p class="title is-2">My Shopping Cart List</p>
       </div>
       <div class="rows clearfix">
-        <button class="button is-success checkout" disabled>Checkout</button>
+        <button class="button is-success checkout is-static">Checkout</button>
       </div>
       <div class="rows">
         <div class="cart-page__item clearfix">
@@ -415,7 +493,7 @@
               <div class="totals-value" id="cart-total">235.67</div>
             </div>
           </div>
-          <button class="button is-success checkout checkout2" disabled>Checkout</button>
+          <button class="button is-success checkout checkout2 is-static">Checkout</button>
         </div>
       </div>
     </section>
@@ -438,7 +516,7 @@
       </div>
       <div class="product-price"></div>
       <div class="product-quantity-box">
-        <input class="product-quantity" type="number" value="1" min="1" max="10">
+        <input class="product-quantity" type="number" value="1" min="1" max="10" data-toggle="tooltip" title="No more!">
         <button type="submit" class="button is-small update-product">Update</button>
         <div class="attribute-max">2</div>
       </div>
