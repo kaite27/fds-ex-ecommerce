@@ -20,6 +20,6 @@
     "tooltip.js": "^1.2.0"
   },
   "devDependencies": {
-    "fds-json-server": "0.0.4"
+    "fds-json-server": "0.0.6"
   }
 }

@@ -40,10 +40,12 @@ async function login(token, localUsername) {
   localStorage.setItem('token', token)
   localStorage.setItem('username', localUsername)
 
+  ecommerceAPI.defaults.headers['Authorization'] = `Bearer ${token}`;
+  rootEl.classList.add('root--authed')
+
   rootEl.classList.add('root--loading')
   mainLoadingEl.classList.remove('offScreen')
   const res = await ecommerceAPI.get(`/users`)
-  const cartRes = await ecommerceAPI.get(`/carts`)
   rootEl.classList.remove('root--loading')
   mainLoadingEl.classList.add('offScreen')
   
@@ -54,15 +56,13 @@ async function login(token, localUsername) {
     }
   }
   let count = 0
+  const cartRes = await ecommerceAPI.get(`/carts`)
   for(const {userId} of cartRes.data) {
-    if(localStorage.getItem('userId') === userId.toString()) {
+    // if(localStorage.getItem('userId') === userId.toString()) {
       count ++
     }
     localStorage.setItem('cartItem', count)
-  }
-  // postAPI.defaults : 항상 기본으로 동작
-  ecommerceAPI.defaults.headers['Authorization'] = `Bearer ${token}`;
-  rootEl.classList.add('root--authed')
+  // }
 
   // 강제 1회 리프레시 
   if (self.name != 'reload') {
@@ -89,12 +89,16 @@ async function nav() {
   const toSignin = nav.querySelector('.btn-sign-in')
   const toShoppingCart = nav.querySelector('.btn-shopping-cart')
   const toSalesReport = nav.querySelector('.btn-sales-report')
-  if(localStorage.getItem('cartItem') !== null) {
-    cartBadge.textContent = `${localStorage.getItem('cartItem')}`
-  }
+  const toLogOut = nav.querySelector('.btn-log-out')
+  const toLogIn = nav.querySelector('.btn-log-in')
 
   if(localStorage.getItem('username') !== null) {
     usernameBox.textContent = (`Welcome ${localStorage.getItem('username')} !`)
+    toLogOut.classList.remove('offScreen')
+    toLogIn.classList.add('offScreen')
+  } 
+  if(localStorage.getItem('cartItem') !== null) {
+    cartBadge.textContent = (`${localStorage.getItem('cartItem')}`)
   } 
   if(localStorage.getItem('userId') === '1' ){
     toAdmin.classList.remove("offScreen")
@@ -182,6 +186,18 @@ async function indexPage() {
       rootEl.textContent = ''
       productDetailPage(product.id)
     })
+  })
+  const subscribeEl = subscribe.querySelector('.input-subscribes')
+  const subscribeBtnEl = subscribe.querySelector('.send-subscribes')
+  subscribeBtnEl.addEventListener("click", e=> {
+    const payload = {
+      email: subscribeEl.value
+    }
+    rootEl.classList.add('root--loading')
+    mainLoadingEl.classList.remove('offScreen')
+    const subRes = ecommerceAPI.post('/subscribes', payload)
+    rootEl.classList.remove('root--loading')
+    mainLoadingEl.classList.add('offScreen')
   })
   
   render(mainHeader)
@@ -446,7 +462,9 @@ async function productDetailPage(productId) {
           modalImg.setAttribute("src", `${productImg}`)
 
           // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!button
+          addCartBtn.classList.add('is-loading')
           const res = await ecommerceAPI.post(`/carts`, payload)
+          addCartBtn.classList.remove('is-loading')
         }
       }
     })
@@ -511,7 +529,7 @@ async function cartPage() {
       cartTotal.textContent = (newSubtotal * (taxRate + 1)).toFixed(2)
     }
     
-    if(userId.toString() === localStorage.getItem('userId')) { 
+    // if(userId.toString() === localStorage.getItem('userId')) { 
     const checkoutBtn = cartFragment.querySelector('.checkout') 
     const checkoutBtn2 = cartFragment.querySelector('.checkout2') 
     const productTitleEl = fragment.querySelector('.product-title') 
@@ -549,7 +567,7 @@ async function cartPage() {
     })
 
     cartFragment.querySelector('.cart-page-list').appendChild(fragment) 
-    }
+    // }
 
     // 카트 삭제하기 
     removeBtn.addEventListener("click", async e => {
@@ -616,7 +634,12 @@ async function adminPage() {
     const attrQttEl = fragment.querySelector('.attr-sku__quantity')
     const onlyPublishBtn = fragment.querySelector('.add-publish-btn')
     const addMoreBtn = fragment.querySelector('.add-more-btn')
+    const imageBadge = fragment.querySelector('.image-uploaded')
+    const imageFileEl = fragment.querySelector('.file-input')
     
+    imageFileEl.addEventListener("click", e => {
+      imageBadge.classList.remove('offScreen')
+    })
     publishBtn.addEventListener("click", async e => {      
       const payload = {
         productTitle: titleEl.value,
@@ -629,7 +652,9 @@ async function adminPage() {
         userId: 1
       }
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!! botton !!!!!!!!!!!!
+      publishBtn.classList.add('is-loading')
       const res = await ecommerceAPI.post(`/products`, payload)
+      publishBtn.classList.remove('is-loading')
 
       titleEl.setAttribute("disabled", "disabled")
       descEl.setAttribute("disabled", "disabled")
@@ -659,6 +684,7 @@ async function adminPage() {
         let payload2 = {
           productId: parseInt(PID),
           attrSKU: SKU.value,
+          userId: 1,
           size: parseInt(SIZE.value),
           color: COL.value,
           quantity: parseInt(QTT.value),
@@ -668,7 +694,9 @@ async function adminPage() {
           defaultAttr: "true"
         }
         // !!!!!!!!!!!!!!!!!!!!!!!!!! botton
+        onlyPublishBtn.classList.add('is-loading')
         const attRes = await ecommerceAPI.post(`/attributes`, payload2)
+        onlyPublishBtn.classList.remove('is-loading')
         console.log("Attribute has posted!")
       } 
 
