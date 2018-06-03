@@ -116,7 +116,7 @@ async function nav() {
   // 프로덕트 
   nav.querySelector('.nav-link__btn-product').addEventListener("click", e => { 
     rootEl.textContent = '' 
-    productPage()
+    productPage('')
   })
   // 카드 아이콘
   nav.querySelector('.cart-icon').addEventListener("click", e => {
@@ -215,18 +215,18 @@ function avoid(arr) {
 }
 
 // 프로덕트 전체 리스트 페이지
-async function productPage() {
+async function productPage(currentCat) {
   nav()
   const productPage = document.importNode(templates.productPage, true)
   const loadingEl = productPage.querySelector('.full-box')
-
+  
   rootEl.classList.add('root--loading')
   loadingEl.classList.remove('offScreen')
   const attRes = await ecommerceAPI.get('/attributes?_expand=product')
-  const res = await ecommerceAPI.get('/products')
+  const res = await ecommerceAPI.get(`/products${currentCat}`)
   rootEl.classList.remove('root--loading')
   loadingEl.classList.add('offScreen')
-
+  
   res.data.forEach(product => {
     const fragment = document.importNode(templates.productPageList, true)
     const imgEl = fragment.querySelector('.product-page__img--main')
@@ -272,6 +272,20 @@ async function productPage() {
       productDetailPage(product.id)
     })
   })
+  
+  // list category
+  const linkAll = productPage.querySelector('.list-all')
+  const linkDress = productPage.querySelector('.list-dress')
+  const linkCoat = productPage.querySelector('.list-coat')
+  const linkShoes = productPage.querySelector('.list-shoes')
+  const linkBag = productPage.querySelector('.list-bags')
+  const linkShirts = productPage.querySelector('.list-shirts')
+  linkDress.addEventListener('click', e => { 
+    console.log('pressed')
+    rootEl.textContent = ''
+    productPage('')
+  })
+
   render(productPage)
 }
 
@@ -287,7 +301,6 @@ async function productDetailPage(productId) {
   rootEl.classList.remove('root--loading')
   loadingEl.classList.add('offScreen')
 
-  const productImg = res.data.imageURL
   const productTitle = res.data.productTitle
   const productDesc = res.data.productDesc
   const productImage = res.data.imageURL
@@ -314,6 +327,7 @@ async function productDetailPage(productId) {
   // 가격 계산
   const addCartBtn = fragment.querySelector('.btn_submit--cart')  
   const inputEl = fragment.querySelector('.option-quantity')
+
   // breadcrumb 이동
   breadCategoryEl.textContent = res.data.category
   breadHomeEl.addEventListener('click', e => {
@@ -322,11 +336,11 @@ async function productDetailPage(productId) {
   })
   breadProductEl.addEventListener('click', e => {
     rootEl.textContent = ''
-    productPage()
+    productPage('')
   })
   breadCategoryEl.addEventListener('click', e => {
     rootEl.textContent = ''
-    productPage()
+    productPage(`/?category=${res.data.category}`)
   })
   inputEl.addEventListener("change", e => {
     let itemQtt = inputEl.value
@@ -466,7 +480,7 @@ async function productDetailPage(productId) {
           modalColor.textContent = selectElColor.value
           modalSize.textContent = parseInt(selectElSize.value)
           modalQtt.textContent = parseInt(inputEl.value)
-          modalImg.setAttribute("src", `${productImg}`)
+          modalImg.setAttribute("src", `${productImage}`)
 
           addCartBtn.classList.add('is-loading')
           const res = await ecommerceAPI.post(`/carts`, payload)
