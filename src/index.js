@@ -488,33 +488,63 @@ async function productDetailPage(productId) {
 
   // 탭
   const tabDetail = fragment.querySelector('#detail')
+  const tabReviewCount = fragment.querySelector('.review-count')
   const tabReview = fragment.querySelector('#review')
   const reviewRes = await ecommerceAPI.get(`/products/${productId}/reviews`)
-  
-
+  let reviewCnt = 0
   // append fragment
   reviewRes.data.forEach(review => {
   const reviewFragment = document.importNode(templates.productReviewTab, true)
+  const reviewEl = reviewFragment.querySelector('.review-list-box')
   const reviewDeleteEl = reviewFragment.querySelector('.review-action-btn')
   const reviewerEl = reviewFragment.querySelector('.review-viewer')
   const reviewbodyEl = reviewFragment.querySelector('.review-body')
   const reviewrateEl = reviewFragment.querySelector('.review-rate')
-
+  const reviewDateEl = reviewFragment.querySelector('.review-date')
+    reviewCnt ++
+    tabReviewCount.textContent = reviewCnt
     reviewerEl.textContent = review.userId
     reviewbodyEl.textContent = review.body
     reviewrateEl.textContent = review.rating
+    reviewDateEl.textContent = review.date
     if(localStorage.getItem('userId') === review.userId.toString()) {
       reviewDeleteEl.classList.remove('is-static')
     }
 
-    // delete corresponding reivew row 
+    // delete corresponding review row 
     reviewDeleteEl.addEventListener('click', async e => {
+      reviewEl.remove()
       reviewDeleteEl.classList.add('is-loading')
       const deleteRes = await ecommerceAPI.delete(`/reviews/${review.id}`)
       reviewDeleteEl.classList.remove('is-loading')
     })
 
     fragment.querySelector('.review-list').appendChild(reviewFragment)
+  })
+
+  // tooltip
+  $(function () { $('[data-toggle="tooltip"]').tooltip() })
+
+  // leave review
+  const reviewWritingCommentEl = fragment.querySelector('.review-input-comment')
+  const reviewWritingRateEl = fragment.querySelector('.review-input-rating')
+  const reviewWritingBtnEl = fragment.querySelector('.review-input-btn')
+
+  reviewWritingBtnEl.addEventListener('click', async e => {
+    const now = new Date()
+    const reviewDate = now.toDateString()
+    const payload = {
+      rating: reviewWritingRateEl.value,
+      body: reviewWritingCommentEl.value,
+      userId: localStorage.getItem('userId'),
+      productId: parseInt(productId),
+      date: reviewDate
+    }
+
+    reviewWritingBtnEl.classList.add('is-loading')
+    const postRes = await ecommerceAPI.post(`/reviews`, payload)
+    reviewWritingBtnEl.classList.remove('is-loading')
+    console.log("Review posted")
   })
 
   render(fragment)

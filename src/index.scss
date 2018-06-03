@@ -1008,10 +1008,17 @@ footer > div > p {
 }
 
 // 리뷰 탭
-.review-reviewer-box { float: left; width: 15%; }
-.review-rate-box { float: left; width: 15%; }
+.review-date-box { float: left; width: 15%; }
+.review-reviewer-box { float: left; width: 5%; }
+.review-rate-box { float: left; width: 10%; }
 .review-body-box { float: left; width: 50%; }
-.review-body-button { float: left; width: 20%; }
+.review-body-button { float: left; width: 10%; }
+
+// Leave a review
+.review-lable-rate { float: left; width: 16%; margin: 0 2%; }
+.review-comment-label { float: left; width: 60%; }
+.review-input-button { float: left; width: 16%; margin: 0 2%; }
+.review-wrting-input {  margin-bottom: 80px; }
 
 .review-list-box {
   margin: 5px 0;
@@ -1049,7 +1056,7 @@ footer > div > p {
 .loader .b1, .loader .b2, .loader .b3 {
   width:10px;
   height:30px;
-  background-color:rgba(256,256,256,0.8);
+  background-color:rgba(256, 256, 256, 0.8);
   position:absolute;
   top:50%;
   transform:rotate(0);

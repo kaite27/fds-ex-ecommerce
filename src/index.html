@@ -419,7 +419,26 @@
               </div>
               <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                 <div class="product-review-box">
+                  <div class="new-reviwe-box">
+                    <div class="column-labels review-writing-labels">
+                      <label class="review-lable-rate">Rating</label>
+                      <label class="review-comment-label">Comment</label>
+                      <label class="review-input-button">Action</label>
+                    </div>
+                    <div class="review-wrting-input">
+                      <select name="review-rate" id="select-review-rating" class="select review-lable-rate review-input-rating">
+                        <option class="product-review-rating" value="&bigstar;">&bigstar;</option>
+                        <option class="product-review-rating" value="&bigstar; &bigstar;">&bigstar; &bigstar;</option>
+                        <option class="product-review-rating" value="&bigstar; &bigstar; &bigstar;">&bigstar; &bigstar; &bigstar;</option>
+                        <option class="product-review-rating" value="&bigstar; &bigstar; &bigstar; &bigstar;">&bigstar; &bigstar; &bigstar; &bigstar;</option>
+                        <option class="product-review-rating" value="&bigstar; &bigstar; &bigstar; &bigstar; &bigstar;">&bigstar; &bigstar; &bigstar; &bigstar; &bigstar;</option>
+                      </select>
+                      <input type="text" class="input review-comment-label review-input-comment" placeholder="Leave your comment" data-toggle="tooltip" title="Your comment helps to make our product better!">
+                      <button class="button is-success review-input-button review-input-btn">Leave Comment</button>
+                    </div>
+                  </div>
                   <div class="column-labels attr-labels review-labels">
+                    <label class="review-date-box">DATE</label>
                     <label class="review-reviewer-box">NAME</label>
                     <label class="review-rate-box">RATING</label>
                     <label class="review-body-box">COMMENT</label>
@@ -440,6 +459,9 @@
 
   <template id="product-review">
     <div class="review-list-box">
+    <div class="review-date-box">
+      <span class="review-date">Sun 2018 06 04</span>
+    </div>
     <div class="review-reviewer-box">
       <span class="review-viewer">KATE</span>
     </div>
