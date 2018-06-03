@@ -28,6 +28,7 @@ const templates = {
   adminMainPage: document.querySelector('#admin-main-page').content,
   addProductPage: document.querySelector('#add-product-page').content,
   addMoreAttr: document.querySelector('#add-more-variants').content,
+  productReviewTab: document.querySelector('#product-review').content,
 }
 
 // Avoid code duplication
@@ -236,6 +237,8 @@ async function productPage() {
     const colorCnt = fragment.querySelector('.list-group-item__color')
     const sizeCnt = fragment.querySelector('.list-group-item__size')
     const productDetail = fragment.querySelector('.link-to-product-detail')
+    const linkBtnEl = fragment.querySelector('.img-box__btn')
+    const linkIconEl = fragment.querySelector('.icon-wish')
 
     itemTitle.textContent = product.productTitle
     itemDesc.textContent = product.productDesc
@@ -260,6 +263,10 @@ async function productPage() {
     })
     productPage.querySelector('.product-page-list').appendChild(fragment)    
 
+    linkBtnEl.addEventListener('click', e => {
+      linkIconEl.classList.add('fas-heart')
+    })
+    
     productDetail.addEventListener("click", e => {
       rootEl.textContent = '' 
       productDetailPage(product.id)
@@ -461,7 +468,6 @@ async function productDetailPage(productId) {
           modalQtt.textContent = parseInt(inputEl.value)
           modalImg.setAttribute("src", `${productImg}`)
 
-          // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!button
           addCartBtn.classList.add('is-loading')
           const res = await ecommerceAPI.post(`/carts`, payload)
           addCartBtn.classList.remove('is-loading')
@@ -483,6 +489,33 @@ async function productDetailPage(productId) {
   // 탭
   const tabDetail = fragment.querySelector('#detail')
   const tabReview = fragment.querySelector('#review')
+  const reviewRes = await ecommerceAPI.get(`/products/${productId}/reviews`)
+  
+
+  // append fragment
+  reviewRes.data.forEach(review => {
+  const reviewFragment = document.importNode(templates.productReviewTab, true)
+  const reviewDeleteEl = reviewFragment.querySelector('.review-action-btn')
+  const reviewerEl = reviewFragment.querySelector('.review-viewer')
+  const reviewbodyEl = reviewFragment.querySelector('.review-body')
+  const reviewrateEl = reviewFragment.querySelector('.review-rate')
+
+    reviewerEl.textContent = review.userId
+    reviewbodyEl.textContent = review.body
+    reviewrateEl.textContent = review.rating
+    if(localStorage.getItem('userId') === review.userId.toString()) {
+      reviewDeleteEl.classList.remove('is-static')
+    }
+
+    // delete corresponding reivew row 
+    reviewDeleteEl.addEventListener('click', async e => {
+      reviewDeleteEl.classList.add('is-loading')
+      const deleteRes = await ecommerceAPI.delete(`/reviews/${review.id}`)
+      reviewDeleteEl.classList.remove('is-loading')
+    })
+
+    fragment.querySelector('.review-list').appendChild(reviewFragment)
+  })
 
   render(fragment)
 }
@@ -539,6 +572,7 @@ async function cartPage() {
     const attributeSize = fragment.querySelector('.attribute-size') 
     const maxQtt = fragment.querySelector('.attribute-max') 
     const productQtt = fragment.querySelector('.product-quantity')
+
     console.log(`attributeId: ${attributeId}`)
     checkoutBtn.classList.remove("is-static")
     checkoutBtn2.classList.remove("is-static")
@@ -651,7 +685,6 @@ async function adminPage() {
         accSoldCnt: 0,
         userId: 1
       }
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!! botton !!!!!!!!!!!!
       publishBtn.classList.add('is-loading')
       const res = await ecommerceAPI.post(`/products`, payload)
       publishBtn.classList.remove('is-loading')
@@ -693,7 +726,6 @@ async function adminPage() {
           soldOut: "false",
           defaultAttr: "true"
         }
-        // !!!!!!!!!!!!!!!!!!!!!!!!!! botton
         onlyPublishBtn.classList.add('is-loading')
         const attRes = await ecommerceAPI.post(`/attributes`, payload2)
         onlyPublishBtn.classList.remove('is-loading')

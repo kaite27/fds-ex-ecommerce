@@ -1007,6 +1007,16 @@ footer > div > p {
   font-size: 90%;
 }
 
+// 리뷰 탭
+.review-reviewer-box { float: left; width: 15%; }
+.review-rate-box { float: left; width: 15%; }
+.review-body-box { float: left; width: 50%; }
+.review-body-button { float: left; width: 20%; }
+
+.review-list-box {
+  margin: 5px 0;
+}
+
 // loading page
 .loading-title {
   font-family: Oak,sans-serif;

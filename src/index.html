@@ -418,9 +418,17 @@
                 <!-- temporary! -->
               </div>
               <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                <div class="product-review-box">
+                  <div class="column-labels attr-labels review-labels">
+                    <label class="review-reviewer-box">NAME</label>
+                    <label class="review-rate-box">RATING</label>
+                    <label class="review-body-box">COMMENT</label>
+                    <label class="review-btn-box">ACTION</label>
+                  </div>
                 <!-- 삽입 -->
-                <div class="review-list"></div>
+                  <div class="review-list"></div>
                 <!-- 삽입 -->
+                </div>
               </div>
               <div class="tab-pane fade" id="policy" role="tabpanel" aria-labelledby="policy-tab"><p>1. Returns <br /><br /> Option 1 – No Refunds/Exchanges: We do not accept returns or exchanges unless the item you purchased is defective. If you receive a defective item, please contact us at with details of the product and the defect. You can send the item you consider defective to: <br /><br /> [Address] <br /><br /> Upon receipt of the returned product, we will fully examine it and notify you via e-mail, within a reasonable period of time, whether you are entitled to a refund or a replacement as a result of the defect. If you are entitled to a replacement or refund, we will replace the product or refund the purchase price, using the original method of payment.</p></div>
             </div>
@@ -428,6 +436,25 @@
         </div>
       </div>
     </section>
+  </template>
+
+  <template id="product-review">
+    <div class="review-list-box">
+    <div class="review-reviewer-box">
+      <span class="review-viewer">KATE</span>
+    </div>
+    <div class="review-rate-box">
+      <span class="review-rate">4</span>
+    </div>
+    <div class="review-body-box">
+      <span class="review-body">THIS IS REVIEW</span>
+    </div>
+    <div class="review-btn-box">
+      <div class="control">
+        <button type="button" class="button is-success review-action-btn is-static">DELETE</button>
+      </div>
+    </div>
+    </div>
   </template>
 
   <!-- 어트리뷰트 컬러  -->
