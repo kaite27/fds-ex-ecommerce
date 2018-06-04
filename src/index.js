@@ -217,8 +217,8 @@ function avoid(arr) {
 // 프로덕트 전체 리스트 페이지
 async function productPage(currentCat) {
   nav()
-  const productPage = document.importNode(templates.productPage, true)
-  const loadingEl = productPage.querySelector('.full-box')
+  const productPageEl = document.importNode(templates.productPage, true)
+  const loadingEl = productPageEl.querySelector('.full-box')
   
   rootEl.classList.add('root--loading')
   loadingEl.classList.remove('offScreen')
@@ -261,7 +261,7 @@ async function productPage(currentCat) {
         })
       }
     })
-    productPage.querySelector('.product-page-list').appendChild(fragment)    
+    productPageEl.querySelector('.product-page-list').appendChild(fragment)    
 
     linkBtnEl.addEventListener('click', e => {
       linkIconEl.classList.add('fas-heart')
@@ -274,19 +274,39 @@ async function productPage(currentCat) {
   })
   
   // list category
-  const linkAll = productPage.querySelector('.list-all')
-  const linkDress = productPage.querySelector('.list-dress')
-  const linkCoat = productPage.querySelector('.list-coat')
-  const linkShoes = productPage.querySelector('.list-shoes')
-  const linkBag = productPage.querySelector('.list-bags')
-  const linkShirts = productPage.querySelector('.list-shirts')
-  linkDress.addEventListener('click', e => { 
-    console.log('pressed')
+  const linkAll = productPageEl.querySelector('.list-all')
+  const linkDress = productPageEl.querySelector('.list-dress')
+  const linkCoat = productPageEl.querySelector('.list-coat')
+  const linkShoes = productPageEl.querySelector('.list-shoes')
+  const linkBag = productPageEl.querySelector('.list-bags')
+  const linkShirts = productPageEl.querySelector('.list-shirts')
+  linkAll.addEventListener('click', e => { 
     rootEl.textContent = ''
     productPage('')
   })
+  linkDress.addEventListener('click', e => { 
+    rootEl.textContent = ''
+    productPage(`/?category=dress`)
+  })
+  linkCoat.addEventListener('click', e => { 
+    rootEl.textContent = ''
+    productPage(`/?category=coat`)
+  })
+  linkShoes.addEventListener('click', e => { 
+    rootEl.textContent = ''
+    productPage(`/?category=shoes`)
+  })
+  linkBag.addEventListener('click', e => { 
+    rootEl.textContent = ''
+    productPage(`/?category=bags`)
+  })
+  linkShirts.addEventListener('click', e => { 
+    rootEl.textContent = ''
+    productPage(`/?category=shirts`)
+  })
+  
 
-  render(productPage)
+  render(productPageEl)
 }
 
 // 프로덕트 상세 페이지 
@@ -294,6 +314,7 @@ async function productDetailPage(productId) {
   nav()
   const fragment = document.importNode(templates.productDetail, true)
   const loadingEl = fragment.querySelector('.full-box')
+  
   rootEl.classList.add('root--loading')
   loadingEl.classList.remove('offScreen')
   const res = await ecommerceAPI.get(`/products/${productId}`)

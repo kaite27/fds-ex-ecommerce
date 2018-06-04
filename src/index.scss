@@ -520,8 +520,8 @@ section {
         object-fit: cover;
       }
     }
-    // z-index: 2; 이미지 태그에 앵커 따로 걸 경우 해제!
     &__btn, &__dropdown {
+      // z-index: 100;
       position: absolute;
       top: 80%;
       left: 60%;
