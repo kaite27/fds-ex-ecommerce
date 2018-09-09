@@ -566,8 +566,10 @@ async function productDetailPage(productId) {
   const reviewWritingBtnEl = fragment.querySelector('.review-input-btn')
 
   reviewWritingBtnEl.addEventListener('click', async e => {
+    const reviewFragment = document.importNode(templates.productReviewTab, true)
+    const reviewEl = reviewFragment.querySelector('.review-list-box')
     const now = new Date()
-    const reviewDate = now.toDateString()
+    const reviewDate = now.toDateString() 
     const payload = {
       rating: reviewWritingRateEl.value,
       body: reviewWritingCommentEl.value,
@@ -575,10 +577,10 @@ async function productDetailPage(productId) {
       productId: parseInt(productId),
       date: reviewDate
     }
-
     reviewWritingBtnEl.classList.add('is-loading')
     const postRes = await ecommerceAPI.post(`/reviews`, payload)
     reviewWritingBtnEl.classList.remove('is-loading')
+    
     console.log("Review posted")
   })
 
