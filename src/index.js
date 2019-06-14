@@ -590,7 +590,8 @@ async function productDetailPage(productId) {
     const postRes = await ecommerceAPI.post(`/reviews`, payload)
     reviewWritingBtnEl.classList.remove('is-loading')
     
-    console.log("Review posted")
+    rootEl.textContent = ''
+    productDetailPage(productId) 
   })
 
   render(fragment)
@@ -698,7 +699,7 @@ async function cartPage() {
           count ++
         }
       localStorage.setItem('cartItem', count)
-      
+
       rootEl.textContent = '' 
       cartPage()
     })
