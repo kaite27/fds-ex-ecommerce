@@ -515,6 +515,8 @@ async function productDetailPage(productId) {
     })
     
     let count = 0
+    // Object.keys(cartRes.data).length
+    // cartRes.data.length
     const cartRes = await ecommerceAPI.get(`/carts`)
     for(const {userId} of cartRes.data) {
         count ++
