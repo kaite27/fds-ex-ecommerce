@@ -1,7 +1,7 @@
 {
   "name": "fds-midproject-template",
   "version": "1.0.0",
-  "description": "패스트캠퍼스 프론트엔드 개발 스쿨 중간 프로젝트 템플릿",
+  "description": "SPA eCommerce site",
   "scripts": {
     "start": "parcel src/index.html --open",
     "build": "rimraf dist && parcel build src/index.html",
@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "babel-preset-react-app": "^3.1.1",
     "bulma-extensions": "^1.0.31",
     "node-sass": "^4.9.0",
