@@ -157,7 +157,7 @@ async function indexPage() {
   
   rootEl.classList.add('root--loading')
   mainLoadingEl.classList.remove('offScreen')
-  const res = await ecommerceAPI.get('/products')
+  const res = await ecommerceAPI.get('/products?_sort=id&_order=desc&_limit=4`')
   rootEl.classList.remove('root--loading')
   mainLoadingEl.classList.add('offScreen')
 
@@ -175,9 +175,9 @@ async function indexPage() {
     let url = product.imageURL
     imgEl.setAttribute("src", `${url}`)
 
-    if(product.id === res.data.length || product.id === res.data.length - 1 || product.id === res.data.length - 2 || product.id === res.data.length - 3) {
+    // if(product.id === res.data.length || product.id === res.data.length - 1 || product.id === res.data.length - 2 || product.id === res.data.length - 3) {
       newProFrag.querySelector('.new-products-list').appendChild(fragment)
-    }
+    // }
 
     imgEl.addEventListener("click", e => {
       rootEl.textContent = ''
@@ -286,23 +286,23 @@ async function productPage(currentCat) {
   })
   linkDress.addEventListener('click', e => { 
     rootEl.textContent = ''
-    productPage(`/?category=dress`)
+    productPage(`/?category=Dress`)
   })
   linkCoat.addEventListener('click', e => { 
     rootEl.textContent = ''
-    productPage(`/?category=coat`)
+    productPage(`/?category=Coat`)
   })
   linkShoes.addEventListener('click', e => { 
     rootEl.textContent = ''
-    productPage(`/?category=shoes`)
+    productPage(`/?category=Shoes`)
   })
   linkBag.addEventListener('click', e => { 
     rootEl.textContent = ''
-    productPage(`/?category=bags`)
+    productPage(`/?category=Bags`)
   })
   linkShirts.addEventListener('click', e => { 
     rootEl.textContent = ''
-    productPage(`/?category=shirts`)
+    productPage(`/?category=Shirts`)
   })
   
 
@@ -708,8 +708,8 @@ async function adminPage() {
   const loadingEl = adminFragment.querySelector('.full-box')
   const toAddProduct = adminFragment.querySelector('.admin-content')
   // add product 페이지 이동
-  const addProductBtn = adminFragment.querySelector('.admin-link-add')
-  addProductBtn.addEventListener("click", move => {
+  // const addProductBtn = adminFragment.querySelector('.admin-link-add')
+  // addProductBtn.addEventListener("click", move => {
     const fragment = document.importNode(templates.addProductPage, true)
 
     // tooltip
@@ -843,7 +843,7 @@ async function adminPage() {
 
     })
     toAddProduct.appendChild(fragment)    
-  })
+  // })
   render(adminFragment)
 }
 
@@ -876,6 +876,7 @@ if (localStorage.getItem('token') && localStorage.getItem('username')) {
 } 
 
 // initial login 
-if(localStorage.getItem('userId') === '1') {
-  adminPage() 
-} else indexPage()
+// if(localStorage.getItem('userId') === '1') {
+//   adminPage() 
+// } else 
+indexPage()

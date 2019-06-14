@@ -328,6 +328,7 @@ section {
 
 /* ---------- header carouser setting ---------- */
 .events-item, .new-products-img {
+  position: relative;
   width: 100%;
   margin: 0;
   overflow: hidden;
@@ -345,6 +346,15 @@ section {
 .events-item img {
   height: 100%;
   object-fit: cover;
+}
+
+.events-item span {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 2rem;
 }
 .new-products-items img {
   transform: scale(1.00);
@@ -382,7 +392,23 @@ section {
   }
 } 
 // 큰 광고 패널 컨트롤
-.carousel { grid-area: cr; }
+.carousel { 
+  grid-area: cr;
+  &-inner {
+    position: relative;
+    &::before {
+      content: "MEMORIAL DAY SALES & DEALS";
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      z-index: 1;
+      font-size: 1rem;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 7px 20px;
+    } 
+  }
+}
 
 
 /* ---------- new-products ----------- */
@@ -464,10 +490,9 @@ section {
 }
 
 // product page 페이지 
-.product-detail-img img {
-  width: 90%;
-  opacity: 0.2;
-  background-color: #000;
+.product-detail-img p {
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 
