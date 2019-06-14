@@ -410,6 +410,103 @@ section {
   }
 }
 
+/* ---------- login page ----------------*/
+.login {
+  background: url("https://image.freepik.com/free-photo/shopping-bag-with-little-tag-near-lipstick-nail-polish_23-2147957580.jpg");
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login .design-box {
+  width: 400px;
+  height: auto;
+  padding: 30px;
+  background-color: rgba(0, 0, 0, .7);
+  border-radius: 8px;
+  box-shadow: 0 15px 24px rgba(0, 0, 0, .5);
+}
+
+.login .design-box h3 {
+  color: #fff;
+  margin-bottom: 7px;
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.login .design-box p {
+  color: #e67d22d0;
+  text-align: center;
+  line-height: 16px;
+}
+
+.login .design-box .inputBox {
+  position: relative;
+}
+
+.login .design-box .inputBox input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background: transparent;
+}
+
+.login .design-box .inputBox label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 1.1rem;
+  color: #fff;
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.login .design-box .inputBox input:focus ~ label,
+.login .design-box .inputBox input:valid ~ label {
+  top: -20px;
+  font-size: 0.8rem;
+  color: #e67e22;
+  font-weight: 700;
+}
+
+
+.login .design-box form .buttonBox > input {
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #e67e22;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: 0.6s;
+}
+
+.login .design-box .buttonBox {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.login .design-box .buttonBox input[type="submit"]:hover {
+  background: #c56511;
+} 
+
+.login .design-box .buttonBox input[type="button"] {
+  background: rgb(100, 100, 100);
+} 
+
+.login .design-box .buttonBox input[type="button"]:hover {
+  background: #999;
+}
 
 /* ---------- new-products ----------- */
 .new-products {
