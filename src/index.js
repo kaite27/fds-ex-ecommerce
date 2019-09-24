@@ -163,12 +163,9 @@ async function indexPage() {
   const subscribe = document.importNode(templates.subscribes, true)
   const contactPage = document.importNode(templates.contactPage, true)
   
-
-  rootEl.classList.add('root--loading')
-  mainLoadingEl.classList.remove('offScreen')
+  rootEl.textContent = 'loading...It might take up to 30 seconds for the server turns on.';
   const res = await ecommerceAPI.get('/products?_sort=id&_order=desc&_limit=4')
-  rootEl.classList.remove('root--loading')
-  mainLoadingEl.classList.add('offScreen')
+  rootEl.textContent = '';
 
   nav()
 
@@ -911,6 +908,5 @@ if (localStorage.getItem('token') && localStorage.getItem('username')) {
 // if(localStorage.getItem('userId') === '1') {
 //   adminPage() 
 // } else 
-rootEl.textContent = 'loading...It might take up to 30 seconds for the server turns on.';
+
 indexPage()
-rootEl.textContent = '';
